@@ -1,0 +1,707 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>COA File 03 — Week 2 Network & Storage</title>
+<style>:root {
+  --bg:#0b0d14;--surface:#13161f;--surface2:#1a1d2e;--surface3:#1f2235;
+  --border:#252840;--border2:#2f3354;
+  --accent:#6ee7f7;--accent2:#a78bfa;--accent3:#34d399;
+  --orange:#fb923c;--red:#f87171;--yellow:#fbbf24;--pink:#f472b6;--blue:#60a5fa;
+  --text:#e2e8f0;--muted:#64748b;--code-bg:#090b10;
+  --w1:#38bdf8;--w2:#fbbf24;--w3:#34d399;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;line-height:1.65;}
+#topbar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;z-index:999;transition:width .1s;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;z-index:100;}
+.sb-logo{padding:1.2rem 1.2rem .9rem;border-bottom:1px solid var(--border);}
+.sb-logo-tag{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
+.sb-logo h2{font-size:.95rem;font-weight:800;}
+.sb-logo p{font-size:.68rem;color:var(--muted);margin-top:.15rem;}
+.sb-file-nav{padding:.6rem 1.2rem;display:flex;flex-direction:column;gap:.2rem;border-bottom:1px solid var(--border);}
+.sb-file-link{display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;border-radius:6px;font-size:.72rem;color:var(--muted);text-decoration:none;transition:all .18s;}
+.sb-file-link:hover{background:rgba(255,255,255,.04);color:var(--text);}
+.sb-file-link.current{background:rgba(110,231,247,.08);color:var(--accent);font-weight:600;}
+.sb-file-link .fnum{width:20px;height:20px;border-radius:4px;background:rgba(110,231,247,.1);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;flex-shrink:0;}
+.sb-section-label{padding:.7rem 1.2rem .2rem;font-size:.57rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);}
+.sb-link{display:flex;align-items:center;gap:.6rem;padding:.42rem 1.2rem;font-size:.76rem;color:#94a3b8;text-decoration:none;transition:all .18s;border-left:2px solid transparent;}
+.sb-link:hover,.sb-link.active{color:var(--text);background:rgba(110,231,247,.05);border-left-color:var(--accent);}
+.sb-dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .18s;}
+.sb-link:hover .sb-dot,.sb-link.active .sb-dot{background:var(--accent);}
+.main{margin-left:260px;padding:2.5rem 3.5rem;max-width:1000px;}
+.hero{position:relative;overflow:hidden;border-radius:14px;padding:2.5rem;margin-bottom:2.5rem;background:var(--surface2);border:1px solid var(--border2);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(110,231,247,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(110,231,247,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.hero-glow{position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(167,139,250,.18) 0%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:.7rem;display:flex;align-items:center;gap:.6rem;}
+.hero-eyebrow::before{content:'';display:block;width:22px;height:1px;background:var(--accent);}
+.hero h1{font-size:2rem;font-weight:900;line-height:1.1;margin-bottom:.7rem;}
+.hero h1 em{font-style:normal;color:var(--accent);}
+.hero p{color:#94a3b8;font-size:.88rem;max-width:580px;line-height:1.7;}
+.sec-hdr{display:flex;align-items:flex-start;gap:1rem;margin:3rem 0 1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+.sec-num{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;flex-shrink:0;}
+.sn-cyan{background:rgba(110,231,247,.12);color:var(--accent);border:1px solid rgba(110,231,247,.2);}
+.sn-purple{background:rgba(167,139,250,.12);color:var(--accent2);border:1px solid rgba(167,139,250,.2);}
+.sn-green{background:rgba(52,211,153,.12);color:var(--accent3);border:1px solid rgba(52,211,153,.2);}
+.sn-orange{background:rgba(251,146,60,.12);color:var(--orange);border:1px solid rgba(251,146,60,.2);}
+.sn-yellow{background:rgba(251,191,36,.12);color:var(--yellow);border:1px solid rgba(251,191,36,.2);}
+.sn-pink{background:rgba(244,114,182,.12);color:var(--pink);border:1px solid rgba(244,114,182,.2);}
+.sn-blue{background:rgba(96,165,250,.12);color:var(--blue);border:1px solid rgba(96,165,250,.2);}
+.sec-ey{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.25rem;}
+.sec-title{font-size:1.4rem;font-weight:800;line-height:1.2;}
+.sec-desc{font-size:.81rem;color:var(--muted);margin-top:.25rem;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.4rem;margin-bottom:1.1rem;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
+.card.cyan::before{background:var(--accent);}
+.card.purple::before{background:var(--accent2);}
+.card.green::before{background:var(--accent3);}
+.card.orange::before{background:var(--orange);}
+.card.yellow::before{background:var(--yellow);}
+.card.pink::before{background:var(--pink);}
+.card.blue::before{background:var(--blue);}
+.card.w1::before{background:var(--w1);}
+.card.w2::before{background:var(--w2);}
+.card.w3::before{background:var(--w3);}
+.card-lbl{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:.55rem;}
+.card-lbl.cyan{color:var(--accent)}.card-lbl.purple{color:var(--accent2)}.card-lbl.green{color:var(--accent3)}
+.card-lbl.orange{color:var(--orange)}.card-lbl.yellow{color:var(--yellow)}.card-lbl.pink{color:var(--pink)}
+.card-lbl.blue{color:var(--blue)}.card-lbl.w1{color:var(--w1)}.card-lbl.w2{color:var(--w2)}.card-lbl.w3{color:var(--w3)}
+.card-q{font-weight:700;font-size:.95rem;margin-bottom:.5rem;line-height:1.5;}
+.card-desc{font-size:.81rem;color:#94a3b8;line-height:1.7;margin-bottom:.8rem;}
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;overflow-x:auto;font-size:.76rem;line-height:1.65;margin:.6rem 0;}
+code{font-family:'Cascadia Code','Fira Code','Courier New',monospace;}
+.cm{color:#6272a4;font-style:italic;}.kw{color:#ff79c6;}.fn{color:#50fa7b;}.str{color:#f1fa8c;}.num{color:#bd93f9;}.key{color:#8be9fd;}.val{color:#ffb86c;}.ok{color:#50fa7b;font-weight:bold;}.er{color:#ff5555;font-weight:bold;}
+.alert{border-radius:8px;padding:.9rem 1.1rem;margin:.7rem 0;font-size:.81rem;line-height:1.65;display:flex;gap:.8rem;}
+.alert-icon{font-size:1rem;flex-shrink:0;margin-top:.05rem;}
+.alert-body strong{display:block;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.25rem;}
+.alert.info{background:rgba(110,231,247,.06);border:1px solid rgba(110,231,247,.18);}
+.alert.info strong{color:var(--accent);}
+.alert.warn{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);}
+.alert.warn strong{color:var(--yellow);}
+.alert.danger{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.2);}
+.alert.danger strong{color:var(--red);}
+.alert.success{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);}
+.alert.success strong{color:var(--accent3);}
+.steps{list-style:none;counter-reset:step;margin:.4rem 0;}
+.steps li{counter-increment:step;display:flex;gap:.8rem;margin-bottom:.8rem;font-size:.83rem;line-height:1.6;align-items:flex-start;}
+.steps li::before{content:counter(step);min-width:24px;height:24px;background:var(--surface3);color:var(--accent);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.68rem;flex-shrink:0;margin-top:.1rem;}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
+.checklist li{display:flex;align-items:flex-start;gap:.7rem;font-size:.83rem;color:#94a3b8;line-height:1.5;}
+.checklist li::before{content:'☐';color:var(--muted);flex-shrink:0;font-size:.95rem;line-height:1.3;}
+.tbl{width:100%;border-collapse:collapse;margin:.7rem 0;font-size:.8rem;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.tbl th{background:var(--surface2);padding:.6rem .85rem;text-align:left;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);}
+.tbl td{padding:.6rem .85rem;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:rgba(255,255,255,.015);}
+.ic{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:.1em .35em;font-family:monospace;font-size:.8em;}
+.goal{display:flex;align-items:flex-start;gap:.7rem;background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.2);border-radius:6px;padding:.85rem 1rem;margin-top:1rem;font-size:.81rem;}
+.goal strong{color:var(--accent3);}
+.day-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:1.2rem;overflow:hidden;}
+.day-hdr{display:flex;align-items:center;gap:.9rem;padding:1rem 1.3rem;border-bottom:1px solid transparent;cursor:pointer;user-select:none;transition:background .18s;}
+.day-hdr:hover{background:rgba(255,255,255,.025);}
+.day-card.open .day-hdr{border-bottom-color:var(--border);}
+.day-num{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex-shrink:0;}
+.d-w1 .day-num{background:rgba(56,189,248,.15);color:var(--w1);}
+.d-w2 .day-num{background:rgba(251,191,36,.15);color:var(--w2);}
+.d-w3 .day-num{background:rgba(52,211,153,.15);color:var(--w3);}
+.day-tw{flex:1;}
+.day-title{font-weight:700;font-size:.95rem;}
+.day-sub{font-size:.72rem;color:var(--muted);margin-top:.1rem;}
+.day-chev{color:var(--muted);transition:transform .28s;font-size:1.1rem;}
+.day-card.open .day-chev{transform:rotate(180deg);}
+.day-body{display:none;padding:1.4rem;}
+.day-card.open .day-body{display:block;}
+.week-hdr{display:flex;align-items:center;gap:.9rem;margin:2.5rem 0 1.2rem;padding-bottom:.9rem;border-bottom:1px solid var(--border);}
+.week-badge{padding:.35rem .9rem;border-radius:6px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.wb1{background:rgba(56,189,248,.15);color:var(--w1);border:1px solid rgba(56,189,248,.3);}
+.wb2{background:rgba(251,191,36,.15);color:var(--w2);border:1px solid rgba(251,191,36,.3);}
+.wb3{background:rgba(52,211,153,.15);color:var(--w3);border:1px solid rgba(52,211,153,.3);}
+.week-title{font-size:1.2rem;font-weight:800;}
+.tag{display:inline-block;padding:.15rem .5rem;border-radius:4px;font-size:.65rem;font-weight:700;}
+.t-id{background:rgba(167,139,250,.15);color:#a78bfa;}
+.t-img{background:rgba(244,114,182,.15);color:#f472b6;}
+.t-cmp{background:rgba(56,189,248,.15);color:#38bdf8;}
+.t-net{background:rgba(251,191,36,.15);color:#fbbf24;}
+.t-blk{background:rgba(52,211,153,.15);color:#34d399;}
+.t-obj{background:rgba(251,146,60,.15);color:#fb923c;}
+.t-ht{background:rgba(248,113,113,.15);color:#f87171;}
+.nav-btns{display:flex;gap:1rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);}
+.nav-btn{display:flex;align-items:center;gap:.6rem;padding:.7rem 1.2rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);font-size:.78rem;transition:all .2s;flex:1;}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent);}
+.nav-btn.next{justify-content:flex-end;}
+#scrollTop{position:fixed;bottom:1.5rem;right:1.5rem;width:40px;height:40px;background:var(--surface2);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .3s;z-index:200;color:var(--accent);font-size:.95rem;}
+#scrollTop.show{opacity:1;}
+@media(max-width:900px){.sidebar{display:none;}.main{margin-left:0;padding:1.5rem;}}
+</style></head><body>
+<div id="topbar"></div>
+<nav class="sidebar">
+  <div class="sb-logo"><div class="sb-logo-tag">COA Complete Guide</div><h2>File 03</h2><p>Week 2 — Network & Storage</p></div>
+  <div class="sb-file-nav">
+    <a href="COA_00_Master_Index.html" class="sb-file-link"><span class="fnum">00</span>Master Index</a>
+    <a href="COA_01_Foundation.html" class="sb-file-link"><span class="fnum">01</span>Foundation & Exam Intel</a>
+    <a href="COA_02_Week1_CoreServices.html" class="sb-file-link"><span class="fnum">02</span>Week 1 — Core Services</a>
+    <a href="COA_03_Week2_NetworkStorage.html" class="sb-file-link current"><span class="fnum">03</span>Week 2 — Network & Storage</a>
+    <a href="COA_04_Week3_MockExams.html" class="sb-file-link"><span class="fnum">04</span>Week 3 — Speed & Mocks</a>
+    <a href="COA_05_UbuntuProject.html" class="sb-file-link"><span class="fnum">05</span>Ubuntu Server Project</a>
+  </div>
+  <div class="sb-section-label">Days 8–14</div>
+  <a href="#day8" class="sb-link"><span class="sb-dot"></span>Day 8 — Neutron Part 1</a>
+  <a href="#day9" class="sb-link"><span class="sb-dot"></span>Day 9 — Neutron Part 2</a>
+  <a href="#day10" class="sb-link"><span class="sb-dot"></span>Day 10 — Neutron Part 3</a>
+  <a href="#day11" class="sb-link"><span class="sb-dot"></span>Day 11 — Cinder</a>
+  <a href="#day12" class="sb-link"><span class="sb-dot"></span>Day 12 — Swift</a>
+  <a href="#day13" class="sb-link"><span class="sb-dot"></span>Day 13 — Heat</a>
+  <a href="#day14" class="sb-link"><span class="sb-dot"></span>Day 14 — Week Review</a>
+</nav>
+<main class="main">
+  <div class="hero">
+    <div class="hero-grid"></div><div class="hero-glow"></div>
+    <div class="hero-eyebrow">File 03 — Days 8 through 14</div>
+    <h1>Week 2: <em>Network & Storage</em></h1>
+    <p>Networking (30%) + Block Storage (10%) + Object Storage (5%) + Heat (10%) = 55% of your exam. This week has the hardest material. Master Neutron first — it earns the most marks.</p>
+  </div>
+
+  <div class="week-hdr"><span class="week-badge wb2">Week 2</span><span class="week-title">Neutron · Cinder · Swift · Heat — 45% of Exam</span></div>
+
+  <!-- DAY 8 -->
+  <div id="day8" class="day-card d-w2">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">8</div>
+      <div class="day-tw"><div class="day-title">Neutron Part 1 — Networks & Subnets</div>
+      <div class="day-sub"><span class="tag t-net">Networking 30%</span> · Provider + Tenant networks · 3 hrs</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="card w2">
+        <div class="card-lbl w2">Task 8.1 — Exam Style</div>
+        <div class="card-q">Create tenant network <strong>app-net</strong>. Create subnet <strong>app-subnet</strong> on it: CIDR <strong>192.168.100.0/24</strong>, gateway <strong>192.168.100.1</strong>, DNS <strong>8.8.8.8</strong> and <strong>8.8.4.4</strong>, DHCP enabled.</div>
+        <pre><code>openstack network create app-net
+
+openstack subnet create app-subnet \
+  --network app-net \
+  --subnet-range 192.168.100.0/24 \
+  --gateway 192.168.100.1 \
+  --dns-nameserver 8.8.8.8 \
+  --dns-nameserver 8.8.4.4
+
+<span class="cm"># Verify</span>
+openstack subnet show app-subnet</code></pre>
+      </div>
+
+      <div class="card w2">
+        <div class="card-lbl w2">Task 8.2 — Exam Style</div>
+        <div class="card-q">Create external provider network <strong>public</strong> using <strong>flat</strong> type on physical network <strong>extnet</strong>. Create subnet <strong>public-subnet</strong>: CIDR <strong>203.0.113.0/24</strong>, gateway <strong>203.0.113.1</strong>, allocation pool <strong>203.0.113.100–203.0.113.200</strong>, no DHCP.</div>
+        <pre><code><span class="cm"># Admin only — external network</span>
+openstack network create public \
+  --external \
+  --provider-network-type flat \
+  --provider-physical-network extnet
+
+openstack subnet create public-subnet \
+  --network public \
+  --subnet-range 203.0.113.0/24 \
+  --gateway 203.0.113.1 \
+  --allocation-pool start=203.0.113.100,end=203.0.113.200 \
+  --no-dhcp
+
+openstack network show public -c "router:external"</code></pre>
+      </div>
+
+      <div class="card w2">
+        <div class="card-lbl w2">Task 8.3 — Exam Style</div>
+        <div class="card-q">Create a second network <strong>db-net</strong> with subnet <strong>db-subnet</strong>: CIDR <strong>10.20.0.0/24</strong>, DHCP disabled.</div>
+        <pre><code>openstack network create db-net
+openstack subnet create db-subnet \
+  --network db-net \
+  --subnet-range 10.20.0.0/24 \
+  --no-dhcp
+
+openstack network list</code></pre>
+      </div>
+
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 8 Goal:</strong> Create any network + subnet configuration in under 5 minutes.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 9 -->
+  <div id="day9" class="day-card d-w2">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">9</div>
+      <div class="day-tw"><div class="day-title">Neutron Part 2 — Routers & Floating IPs</div>
+      <div class="day-sub"><span class="tag t-net">Networking 30%</span> · The most common exam scenario · 3 hrs</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="alert info"><div class="alert-icon">💡</div><div class="alert-body"><strong>You Have Done This Already</strong>MicroStack floating IP setup is exactly this workflow. Run it from memory first, then compare with the solution below.</div></div>
+
+      <div class="card w2">
+        <div class="card-lbl w2">Task 9.1 — Exam Style</div>
+        <div class="card-q">Create router <strong>main-router</strong>. Set its external gateway to <strong>public</strong> network. Connect it to <strong>app-subnet</strong> and <strong>db-subnet</strong>.</div>
+        <pre><code>openstack router create main-router
+
+<span class="cm"># Set external gateway</span>
+openstack router set main-router --external-gateway public
+
+<span class="cm"># Add internal interfaces</span>
+openstack router add subnet main-router app-subnet
+openstack router add subnet main-router db-subnet
+
+<span class="cm"># Verify</span>
+openstack router show main-router -c external_gateway_info
+openstack router port list main-router</code></pre>
+      </div>
+
+      <div class="card w2">
+        <div class="card-lbl w2">Task 9.2 — Exam Style</div>
+        <div class="card-q">Allocate a floating IP from <strong>public</strong> network. Associate it to instance <strong>web-01</strong>. Verify the instance is reachable externally.</div>
+        <pre><code>openstack floating ip create public
+
+<span class="cm"># Get the allocated IP</span>
+FIP=$(openstack floating ip list -f value -c "Floating IP Address" | head -1)
+
+<span class="cm"># Associate to instance</span>
+openstack server add floating ip web-01 $FIP
+
+<span class="cm"># Verify</span>
+openstack server show web-01 -c addresses
+openstack floating ip show $FIP -c status -c fixed_ip_address</code></pre>
+      </div>
+
+      <div class="card w2">
+        <div class="card-lbl w2">Task 9.3 — Speed Challenge</div>
+        <div class="card-q">From zero: create network → subnet → router with gateway → launch instance → floating IP → associate. Target: under 12 minutes total.</div>
+        <pre><code><span class="cm"># Full end-to-end in one session — time yourself</span>
+openstack network create speed-net
+openstack subnet create speed-sub --network speed-net --subnet-range 10.99.0.0/24 --dns-nameserver 8.8.8.8
+openstack router create speed-router
+openstack router set speed-router --external-gateway public
+openstack router add subnet speed-router speed-sub
+openstack server create speed-vm --image ubuntu-jammy --flavor app.small --network speed-net --security-group web-sg --wait
+FIP=$(openstack floating ip create public -f value -c floating_ip_address)
+openstack server add floating ip speed-vm $FIP
+openstack server show speed-vm -c addresses</code></pre>
+      </div>
+
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 9 Goal:</strong> Full end-to-end network → instance → floating IP under 12 minutes from zero.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 10 -->
+  <div id="day10" class="day-card d-w2">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">10</div>
+      <div class="day-tw"><div class="day-title">Neutron Part 3 — Ports, Troubleshooting, Advanced</div>
+      <div class="day-sub"><span class="tag t-net">Networking 30%</span> · Diagnostics · 2 hrs</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="card w2">
+        <div class="card-lbl w2">Task 10.1 — Exam Style</div>
+        <div class="card-q">Create port <strong>static-port</strong> on <strong>app-net</strong> with fixed IP <strong>192.168.100.50</strong>. Launch instance <strong>static-vm</strong> using that specific port.</div>
+        <pre><code>openstack port create static-port \
+  --network app-net \
+  --fixed-ip subnet=app-subnet,ip-address=192.168.100.50
+
+openstack server create static-vm \
+  --image ubuntu-jammy \
+  --flavor app.small \
+  --port static-port \
+  --wait
+
+openstack server show static-vm -c addresses</code></pre>
+      </div>
+
+      <div class="card w2">
+        <div class="card-lbl w2">Task 10.2 — Exam Style</div>
+        <div class="card-q">Instance <strong>web-01</strong> has no internet access. Diagnose the problem using CLI only. List your complete diagnostic steps.</div>
+        <pre><code><span class="cm"># Step 1: Check instance status and IPs</span>
+openstack server show web-01 -c status -c addresses -c security_groups
+
+<span class="cm"># Step 2: Is floating IP associated?</span>
+openstack floating ip list
+
+<span class="cm"># Step 3: Check security group allows outbound</span>
+openstack security group rule list web-sg
+
+<span class="cm"># Step 4: Check router has external gateway</span>
+openstack router show main-router -c external_gateway_info
+
+<span class="cm"># Step 5: Check router has subnet interface</span>
+openstack router port list main-router
+
+<span class="cm"># Step 6: Check network is admin state UP</span>
+openstack network show app-net -c admin_state_up -c status
+
+<span class="cm"># Step 7: Check ports on instance</span>
+openstack port list --server web-01</code></pre>
+      </div>
+
+      <div class="card w2">
+        <div class="card-lbl w2">Task 10.3 — Exam Style</div>
+        <div class="card-q">Allow port <strong>static-port</strong> to accept traffic for VIP address <strong>192.168.100.100</strong> (allowed address pair).</div>
+        <pre><code>PORT_ID=$(openstack port show static-port -f value -c id)
+
+openstack port set $PORT_ID \
+  --allowed-address ip-address=192.168.100.100
+
+openstack port show static-port -c allowed_address_pairs</code></pre>
+      </div>
+
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 10 Goal:</strong> Diagnose any broken network path in under 6 minutes using only CLI.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 11 -->
+  <div id="day11" class="day-card d-w2">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">11</div>
+      <div class="day-tw"><div class="day-title">Cinder — Block Storage</div>
+      <div class="day-sub"><span class="tag t-blk">Block Storage 10%</span> · Volumes · Snapshots · BFV · 2 hrs</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="card w2">
+        <div class="card-lbl w2">Task 11.1 — Exam Style</div>
+        <div class="card-q">Create 20 GB volume <strong>data-vol</strong>. Attach it to <strong>web-01</strong>. Detach it. Extend it to 30 GB. Take a snapshot called <strong>data-snap</strong>. Create new volume <strong>data-restored</strong> from snapshot.</div>
+        <pre><code>openstack volume create data-vol --size 20
+
+<span class="cm"># Wait for available</span>
+openstack volume show data-vol -c status
+
+openstack server add volume web-01 data-vol
+openstack volume show data-vol -c attachments
+
+openstack server remove volume web-01 data-vol
+openstack volume set data-vol --size 30
+openstack volume show data-vol -c size
+
+<span class="cm"># Snapshot (use --force if still in-use)</span>
+openstack volume snapshot create data-snap --volume data-vol
+
+<span class="cm"># Restore from snapshot</span>
+openstack volume create data-restored --snapshot data-snap --size 30
+openstack volume show data-restored -c status</code></pre>
+      </div>
+
+      <div class="card w2">
+        <div class="card-lbl w2">Task 11.2 — Exam Style</div>
+        <div class="card-q">Launch instance <strong>bfv-vm</strong> that boots directly from a new 20 GB volume based on image <strong>ubuntu-jammy</strong>. Verify the volume is attached as boot disk.</div>
+        <pre><code>openstack server create bfv-vm \
+  --image ubuntu-jammy \
+  --flavor app.small \
+  --network app-net \
+  --boot-from-volume 20 \
+  --wait
+
+openstack server show bfv-vm -c volumes_attached</code></pre>
+      </div>
+
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 11 Goal:</strong> Full volume lifecycle (create, attach, detach, extend, snapshot, restore) in under 12 minutes.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 12 -->
+  <div id="day12" class="day-card d-w2">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">12</div>
+      <div class="day-tw"><div class="day-title">Swift — Object Storage</div>
+      <div class="day-sub"><span class="tag t-obj">Object Storage 5%</span> · ACLs · Metadata · 2 hrs</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="alert warn"><div class="alert-icon">⚠️</div><div class="alert-body"><strong>Memorise Swift ACL Syntax</strong>Swift ACL strings are non-obvious. Candidates who haven't drilled them specifically lose these marks. Study the patterns below until they are automatic.</div></div>
+
+      <div class="card w2">
+        <div class="card-lbl w2">Task 12.1 — Exam Style</div>
+        <div class="card-q">Create container <strong>backups</strong>. Upload local file <strong>/etc/hostname</strong> to it. Download it as <strong>/tmp/hostname-copy</strong>.</div>
+        <pre><code>openstack container create backups
+
+openstack object create backups /etc/hostname
+<span class="cm"># Note: object name will be "etc/hostname" — rename with --name</span>
+openstack object create backups /etc/hostname --name hostname.txt
+
+openstack object list backups
+
+openstack object save backups hostname.txt --file /tmp/hostname-copy
+cat /tmp/hostname-copy</code></pre>
+      </div>
+
+      <div class="card w2">
+        <div class="card-lbl w2">Task 12.2 — Exam Style</div>
+        <div class="card-q">Make container <strong>backups</strong> publicly readable by anyone. Verify. Then make it private again.</div>
+        <pre><code><span class="cm"># Make public — ACL string is EXACT</span>
+openstack container set backups \
+  --property "X-Container-Read=.r:*,.rlistings"
+
+<span class="cm"># Verify ACL is set</span>
+openstack container show backups
+
+<span class="cm"># Make private (remove the ACL)</span>
+openstack container unset backups --property "X-Container-Read"
+
+openstack container show backups</code></pre>
+      </div>
+
+      <div class="card w2">
+        <div class="card-lbl w2">Task 12.3 — Exam Style</div>
+        <div class="card-q">Set object <strong>hostname.txt</strong> in container <strong>backups</strong> to auto-delete after <strong>3600 seconds</strong>.</div>
+        <pre><code>openstack object set backups hostname.txt \
+  --property "X-Delete-After=3600"
+
+openstack object show backups hostname.txt</code></pre>
+      </div>
+
+      <div class="card w2">
+        <div class="card-lbl w2">Swift ACL Cheatsheet — Memorise All Patterns</div>
+        <pre><code><span class="cm"># Public read (anyone)</span>
+--property "X-Container-Read=.r:*,.rlistings"
+
+<span class="cm"># Specific project can read</span>
+--property "X-Container-Read=PROJECT_ID:*"
+
+<span class="cm"># Specific user in project can read</span>
+--property "X-Container-Read=PROJECT_ID:USER_ID"
+
+<span class="cm"># Project can write</span>
+--property "X-Container-Write=PROJECT_ID:*"
+
+<span class="cm"># Remove ACL</span>
+openstack container unset CONTAINER --property "X-Container-Read"
+
+<span class="cm"># Auto-delete object after N seconds</span>
+--property "X-Delete-After=N"
+
+<span class="cm"># Auto-delete at specific Unix timestamp</span>
+--property "X-Delete-At=1735689600"</code></pre>
+      </div>
+
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 12 Goal:</strong> All Swift ACL patterns from memory. No hesitation on X-Container-Read syntax.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 13 -->
+  <div id="day13" class="day-card d-w2">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">13</div>
+      <div class="day-tw"><div class="day-title">Heat — Orchestration & YAML Templates</div>
+      <div class="day-sub"><span class="tag t-ht">Orchestration ~10%</span> · Full template examples · 3 hrs</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="card w2">
+        <div class="card-lbl w2">HOT Template Structure — 5 Sections to Memorise</div>
+        <pre><code><span class="cm"># heat_template_version — always use 2021-04-16</span>
+heat_template_version: 2021-04-16
+
+description: What this stack does
+
+<span class="cm"># parameters — optional input values</span>
+parameters:
+  param_name:
+    type: string        <span class="cm"># string, number, boolean, json, comma_delimited_list</span>
+    description: What it does
+    default: default_value
+    constraints:
+      - allowed_values: [val1, val2]
+
+<span class="cm"># resources — REQUIRED — actual cloud resources</span>
+resources:
+  resource_logical_name:
+    type: OS::ServiceName::ResourceType
+    properties:
+      property_name: value
+
+<span class="cm"># outputs — optional return values</span>
+outputs:
+  output_name:
+    description: What this returns
+    value: { get_attr: [resource_name, attribute] }</code></pre>
+      </div>
+
+      <div class="card w2">
+        <div class="card-lbl w2">Intrinsic Functions — Know All 4</div>
+        <pre><code><span class="cm"># Reference another resource in this stack</span>
+{ get_resource: my_network }
+
+<span class="cm"># Get an input parameter</span>
+{ get_param: flavor_name }
+
+<span class="cm"># Get attribute from deployed resource</span>
+{ get_attr: [server, first_address] }
+{ get_attr: [server, addresses, network-name, 0, addr] }
+{ get_attr: [fip, floating_ip_address] }
+{ get_attr: [network, id] }
+
+<span class="cm"># String replace</span>
+{ str_replace:
+    template: "Hello $NAME, welcome to $PLACE"
+    params:
+      $NAME: { get_param: username }
+      $PLACE: OpenStack }</code></pre>
+      </div>
+
+      <div class="card w2">
+        <div class="card-lbl w2">Task 13.1 — Exam Style: Write and Deploy</div>
+        <div class="card-q">Write a Heat template that creates: 1 network, 1 subnet (10.10.0.0/24), 1 instance. Accept image and flavor as parameters. Output the instance IP.</div>
+        <pre><code><span class="cm"># File: /tmp/basic-stack.yaml</span>
+heat_template_version: 2021-04-16
+description: Basic stack with network and instance
+
+parameters:
+  image_name:
+    type: string
+    default: ubuntu-jammy
+  flavor_name:
+    type: string
+    default: app.small
+
+resources:
+
+  stack_network:
+    type: OS::Neutron::Net
+    properties:
+      name: stack-net
+
+  stack_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network: { get_resource: stack_network }
+      cidr: 10.10.0.0/24
+      dns_nameservers: [8.8.8.8]
+      enable_dhcp: true
+
+  stack_instance:
+    type: OS::Nova::Server
+    properties:
+      name: stack-vm
+      image: { get_param: image_name }
+      flavor: { get_param: flavor_name }
+      networks:
+        - network: { get_resource: stack_network }
+
+outputs:
+  vm_ip:
+    description: Instance IP address
+    value: { get_attr: [stack_instance, first_address] }
+  network_id:
+    description: Network ID
+    value: { get_attr: [stack_network, id] }</code></pre>
+        <pre><code><span class="cm"># Validate template BEFORE deploying</span>
+openstack orchestration template validate -t /tmp/basic-stack.yaml
+
+<span class="cm"># Deploy</span>
+openstack stack create mystack -t /tmp/basic-stack.yaml --wait
+
+<span class="cm"># Deploy with parameter overrides</span>
+openstack stack create mystack2 -t /tmp/basic-stack.yaml \
+  --parameter image_name=cirros \
+  --wait
+
+<span class="cm"># Inspect</span>
+openstack stack show mystack -c stack_status
+openstack stack resource list mystack
+openstack stack output show mystack vm_ip
+openstack stack event list mystack
+
+<span class="cm"># Update a running stack</span>
+openstack stack update mystack -t /tmp/basic-stack.yaml --wait
+
+<span class="cm"># Delete (removes ALL resources)</span>
+openstack stack delete mystack --wait</code></pre>
+      </div>
+
+      <div class="card w2">
+        <div class="card-lbl w2">Task 13.2 — Exam Style: Template with Security Group + Floating IP</div>
+        <div class="card-q">Write a Heat template that creates an instance with a security group (SSH + ICMP) and a floating IP. Output the floating IP address.</div>
+        <pre><code><span class="cm"># File: /tmp/fip-stack.yaml</span>
+heat_template_version: 2021-04-16
+description: Instance with floating IP
+
+parameters:
+  public_net:
+    type: string
+    default: public
+  private_net:
+    type: string
+    default: app-net
+
+resources:
+
+  web_secgroup:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: heat-sg
+      rules:
+        - protocol: icmp
+        - protocol: tcp
+          port_range_min: 22
+          port_range_max: 22
+        - protocol: tcp
+          port_range_min: 80
+          port_range_max: 80
+
+  web_server:
+    type: OS::Nova::Server
+    properties:
+      name: heat-web
+      image: ubuntu-jammy
+      flavor: app.small
+      networks:
+        - network: { get_param: private_net }
+      security_groups:
+        - { get_resource: web_secgroup }
+
+  web_fip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network: { get_param: public_net }
+      port_id: { get_attr: [web_server, addresses, app-net, 0, port] }
+
+outputs:
+  public_ip:
+    description: Floating IP
+    value: { get_attr: [web_fip, floating_ip_address] }
+  server_id:
+    description: Server UUID
+    value: { get_resource: web_server }</code></pre>
+      </div>
+
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 13 Goal:</strong> Write a Heat template from scratch in under 10 minutes. Validate, deploy, inspect outputs, delete.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 14 -->
+  <div id="day14" class="day-card d-w2">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">14</div>
+      <div class="day-tw"><div class="day-title">Week 2 Timed Review — 60 Minutes, No Notes</div>
+      <div class="day-sub">All Week 2 domains · Full teardown at end</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="alert warn"><div class="alert-icon">⏱️</div><div class="alert-body"><strong>Set a 60-minute timer NOW. No notes. docs.openstack.org only if absolutely stuck.</strong></div></div>
+      <ul class="checklist">
+        <li>Create network <strong>drill-net</strong> (10.20.0.0/24, DNS 1.1.1.1, DHCP on).</li>
+        <li>Create router <strong>drill-router</strong> with public external gateway. Connect drill-net.</li>
+        <li>Create security group <strong>drill-sg</strong>: SSH, HTTP, ICMP.</li>
+        <li>Launch instance <strong>drill-vm</strong> on drill-net with drill-sg.</li>
+        <li>Allocate floating IP, associate to drill-vm.</li>
+        <li>Create 15 GB volume <strong>drill-vol</strong>. Attach to drill-vm.</li>
+        <li>Snapshot drill-vol as <strong>drill-snap</strong>. Create new volume from snapshot.</li>
+        <li>Create container <strong>drill-bucket</strong>. Upload a file. Make it public. Verify ACL.</li>
+        <li>Write Heat template (network + instance). Validate. Deploy as <strong>drill-stack</strong>.</li>
+        <li>Show stack outputs. Delete drill-stack. Full resource cleanup.</li>
+      </ul>
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 14 Goal:</strong> All 10 tasks under 60 minutes. Heat template must be written, not copied — write it before the timer starts.</div></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <a href="COA_02_Week1_CoreServices.html" class="nav-btn">← File 02 Week 1</a>
+    <a href="COA_04_Week3_MockExams.html" class="nav-btn next">File 04 — Week 3 Speed & Mocks →</a>
+  </div>
+</main>
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+function toggle(h){const c=h.parentElement;c.classList.toggle('open');}
+window.addEventListener('scroll',()=>{const s=window.scrollY,h=document.body.scrollHeight-window.innerHeight;const tb=document.getElementById('topbar');if(tb)tb.style.width=(s/h*100)+'%';const st=document.getElementById('scrollTop');if(st)st.classList.toggle('show',s>300);document.querySelectorAll('.sb-link').forEach(a=>{const id=a.getAttribute('href');if(!id||!id.startsWith('#'))return;const el=document.getElementById(id.slice(1));if(el)a.classList.toggle('active',s>=el.offsetTop-130);});});
+</script>
+</body></html>
