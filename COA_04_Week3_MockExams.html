@@ -1,0 +1,622 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>COA File 04 — Week 3 Speed & Mock Exams</title>
+<style>:root {
+  --bg:#0b0d14;--surface:#13161f;--surface2:#1a1d2e;--surface3:#1f2235;
+  --border:#252840;--border2:#2f3354;
+  --accent:#6ee7f7;--accent2:#a78bfa;--accent3:#34d399;
+  --orange:#fb923c;--red:#f87171;--yellow:#fbbf24;--pink:#f472b6;--blue:#60a5fa;
+  --text:#e2e8f0;--muted:#64748b;--code-bg:#090b10;
+  --w1:#38bdf8;--w2:#fbbf24;--w3:#34d399;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;line-height:1.65;}
+#topbar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;z-index:999;transition:width .1s;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;z-index:100;}
+.sb-logo{padding:1.2rem 1.2rem .9rem;border-bottom:1px solid var(--border);}
+.sb-logo-tag{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
+.sb-logo h2{font-size:.95rem;font-weight:800;}
+.sb-logo p{font-size:.68rem;color:var(--muted);margin-top:.15rem;}
+.sb-file-nav{padding:.6rem 1.2rem;display:flex;flex-direction:column;gap:.2rem;border-bottom:1px solid var(--border);}
+.sb-file-link{display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;border-radius:6px;font-size:.72rem;color:var(--muted);text-decoration:none;transition:all .18s;}
+.sb-file-link:hover{background:rgba(255,255,255,.04);color:var(--text);}
+.sb-file-link.current{background:rgba(110,231,247,.08);color:var(--accent);font-weight:600;}
+.sb-file-link .fnum{width:20px;height:20px;border-radius:4px;background:rgba(110,231,247,.1);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;flex-shrink:0;}
+.sb-section-label{padding:.7rem 1.2rem .2rem;font-size:.57rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);}
+.sb-link{display:flex;align-items:center;gap:.6rem;padding:.42rem 1.2rem;font-size:.76rem;color:#94a3b8;text-decoration:none;transition:all .18s;border-left:2px solid transparent;}
+.sb-link:hover,.sb-link.active{color:var(--text);background:rgba(110,231,247,.05);border-left-color:var(--accent);}
+.sb-dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .18s;}
+.sb-link:hover .sb-dot,.sb-link.active .sb-dot{background:var(--accent);}
+.main{margin-left:260px;padding:2.5rem 3.5rem;max-width:1000px;}
+.hero{position:relative;overflow:hidden;border-radius:14px;padding:2.5rem;margin-bottom:2.5rem;background:var(--surface2);border:1px solid var(--border2);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(110,231,247,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(110,231,247,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.hero-glow{position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(167,139,250,.18) 0%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:.7rem;display:flex;align-items:center;gap:.6rem;}
+.hero-eyebrow::before{content:'';display:block;width:22px;height:1px;background:var(--accent);}
+.hero h1{font-size:2rem;font-weight:900;line-height:1.1;margin-bottom:.7rem;}
+.hero h1 em{font-style:normal;color:var(--accent);}
+.hero p{color:#94a3b8;font-size:.88rem;max-width:580px;line-height:1.7;}
+.sec-hdr{display:flex;align-items:flex-start;gap:1rem;margin:3rem 0 1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+.sec-num{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;flex-shrink:0;}
+.sn-cyan{background:rgba(110,231,247,.12);color:var(--accent);border:1px solid rgba(110,231,247,.2);}
+.sn-purple{background:rgba(167,139,250,.12);color:var(--accent2);border:1px solid rgba(167,139,250,.2);}
+.sn-green{background:rgba(52,211,153,.12);color:var(--accent3);border:1px solid rgba(52,211,153,.2);}
+.sn-orange{background:rgba(251,146,60,.12);color:var(--orange);border:1px solid rgba(251,146,60,.2);}
+.sn-yellow{background:rgba(251,191,36,.12);color:var(--yellow);border:1px solid rgba(251,191,36,.2);}
+.sn-pink{background:rgba(244,114,182,.12);color:var(--pink);border:1px solid rgba(244,114,182,.2);}
+.sn-blue{background:rgba(96,165,250,.12);color:var(--blue);border:1px solid rgba(96,165,250,.2);}
+.sec-ey{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.25rem;}
+.sec-title{font-size:1.4rem;font-weight:800;line-height:1.2;}
+.sec-desc{font-size:.81rem;color:var(--muted);margin-top:.25rem;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.4rem;margin-bottom:1.1rem;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
+.card.cyan::before{background:var(--accent);}
+.card.purple::before{background:var(--accent2);}
+.card.green::before{background:var(--accent3);}
+.card.orange::before{background:var(--orange);}
+.card.yellow::before{background:var(--yellow);}
+.card.pink::before{background:var(--pink);}
+.card.blue::before{background:var(--blue);}
+.card.w1::before{background:var(--w1);}
+.card.w2::before{background:var(--w2);}
+.card.w3::before{background:var(--w3);}
+.card-lbl{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:.55rem;}
+.card-lbl.cyan{color:var(--accent)}.card-lbl.purple{color:var(--accent2)}.card-lbl.green{color:var(--accent3)}
+.card-lbl.orange{color:var(--orange)}.card-lbl.yellow{color:var(--yellow)}.card-lbl.pink{color:var(--pink)}
+.card-lbl.blue{color:var(--blue)}.card-lbl.w1{color:var(--w1)}.card-lbl.w2{color:var(--w2)}.card-lbl.w3{color:var(--w3)}
+.card-q{font-weight:700;font-size:.95rem;margin-bottom:.5rem;line-height:1.5;}
+.card-desc{font-size:.81rem;color:#94a3b8;line-height:1.7;margin-bottom:.8rem;}
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;overflow-x:auto;font-size:.76rem;line-height:1.65;margin:.6rem 0;}
+code{font-family:'Cascadia Code','Fira Code','Courier New',monospace;}
+.cm{color:#6272a4;font-style:italic;}.kw{color:#ff79c6;}.fn{color:#50fa7b;}.str{color:#f1fa8c;}.num{color:#bd93f9;}.key{color:#8be9fd;}.val{color:#ffb86c;}.ok{color:#50fa7b;font-weight:bold;}.er{color:#ff5555;font-weight:bold;}
+.alert{border-radius:8px;padding:.9rem 1.1rem;margin:.7rem 0;font-size:.81rem;line-height:1.65;display:flex;gap:.8rem;}
+.alert-icon{font-size:1rem;flex-shrink:0;margin-top:.05rem;}
+.alert-body strong{display:block;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.25rem;}
+.alert.info{background:rgba(110,231,247,.06);border:1px solid rgba(110,231,247,.18);}
+.alert.info strong{color:var(--accent);}
+.alert.warn{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);}
+.alert.warn strong{color:var(--yellow);}
+.alert.danger{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.2);}
+.alert.danger strong{color:var(--red);}
+.alert.success{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);}
+.alert.success strong{color:var(--accent3);}
+.steps{list-style:none;counter-reset:step;margin:.4rem 0;}
+.steps li{counter-increment:step;display:flex;gap:.8rem;margin-bottom:.8rem;font-size:.83rem;line-height:1.6;align-items:flex-start;}
+.steps li::before{content:counter(step);min-width:24px;height:24px;background:var(--surface3);color:var(--accent);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.68rem;flex-shrink:0;margin-top:.1rem;}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
+.checklist li{display:flex;align-items:flex-start;gap:.7rem;font-size:.83rem;color:#94a3b8;line-height:1.5;}
+.checklist li::before{content:'☐';color:var(--muted);flex-shrink:0;font-size:.95rem;line-height:1.3;}
+.tbl{width:100%;border-collapse:collapse;margin:.7rem 0;font-size:.8rem;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.tbl th{background:var(--surface2);padding:.6rem .85rem;text-align:left;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);}
+.tbl td{padding:.6rem .85rem;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:rgba(255,255,255,.015);}
+.ic{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:.1em .35em;font-family:monospace;font-size:.8em;}
+.goal{display:flex;align-items:flex-start;gap:.7rem;background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.2);border-radius:6px;padding:.85rem 1rem;margin-top:1rem;font-size:.81rem;}
+.goal strong{color:var(--accent3);}
+.day-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:1.2rem;overflow:hidden;}
+.day-hdr{display:flex;align-items:center;gap:.9rem;padding:1rem 1.3rem;border-bottom:1px solid transparent;cursor:pointer;user-select:none;transition:background .18s;}
+.day-hdr:hover{background:rgba(255,255,255,.025);}
+.day-card.open .day-hdr{border-bottom-color:var(--border);}
+.day-num{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex-shrink:0;}
+.d-w1 .day-num{background:rgba(56,189,248,.15);color:var(--w1);}
+.d-w2 .day-num{background:rgba(251,191,36,.15);color:var(--w2);}
+.d-w3 .day-num{background:rgba(52,211,153,.15);color:var(--w3);}
+.day-tw{flex:1;}
+.day-title{font-weight:700;font-size:.95rem;}
+.day-sub{font-size:.72rem;color:var(--muted);margin-top:.1rem;}
+.day-chev{color:var(--muted);transition:transform .28s;font-size:1.1rem;}
+.day-card.open .day-chev{transform:rotate(180deg);}
+.day-body{display:none;padding:1.4rem;}
+.day-card.open .day-body{display:block;}
+.week-hdr{display:flex;align-items:center;gap:.9rem;margin:2.5rem 0 1.2rem;padding-bottom:.9rem;border-bottom:1px solid var(--border);}
+.week-badge{padding:.35rem .9rem;border-radius:6px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.wb1{background:rgba(56,189,248,.15);color:var(--w1);border:1px solid rgba(56,189,248,.3);}
+.wb2{background:rgba(251,191,36,.15);color:var(--w2);border:1px solid rgba(251,191,36,.3);}
+.wb3{background:rgba(52,211,153,.15);color:var(--w3);border:1px solid rgba(52,211,153,.3);}
+.week-title{font-size:1.2rem;font-weight:800;}
+.tag{display:inline-block;padding:.15rem .5rem;border-radius:4px;font-size:.65rem;font-weight:700;}
+.t-id{background:rgba(167,139,250,.15);color:#a78bfa;}
+.t-img{background:rgba(244,114,182,.15);color:#f472b6;}
+.t-cmp{background:rgba(56,189,248,.15);color:#38bdf8;}
+.t-net{background:rgba(251,191,36,.15);color:#fbbf24;}
+.t-blk{background:rgba(52,211,153,.15);color:#34d399;}
+.t-obj{background:rgba(251,146,60,.15);color:#fb923c;}
+.t-ht{background:rgba(248,113,113,.15);color:#f87171;}
+.nav-btns{display:flex;gap:1rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);}
+.nav-btn{display:flex;align-items:center;gap:.6rem;padding:.7rem 1.2rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);font-size:.78rem;transition:all .2s;flex:1;}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent);}
+.nav-btn.next{justify-content:flex-end;}
+#scrollTop{position:fixed;bottom:1.5rem;right:1.5rem;width:40px;height:40px;background:var(--surface2);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .3s;z-index:200;color:var(--accent);font-size:.95rem;}
+#scrollTop.show{opacity:1;}
+@media(max-width:900px){.sidebar{display:none;}.main{margin-left:0;padding:1.5rem;}}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-radius:8px;overflow:hidden;margin:.7rem 0;}
+.split-p{background:var(--surface);padding:1.1rem;}
+.split-h{font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);}
+.nav-path{display:flex;align-items:center;gap:.4rem;font-size:.74rem;color:var(--muted);margin-bottom:.5rem;flex-wrap:wrap;}
+.nav-path span{background:var(--surface3);border:1px solid var(--border);padding:.2rem .45rem;border-radius:4px;color:var(--text);font-size:.7rem;}
+.prog-row{display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem;}
+.prog-label{width:155px;font-size:.77rem;flex-shrink:0;}
+.prog-bar{flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:4px;}
+.prog-pct{width:38px;text-align:right;font-weight:700;font-size:.77rem;}
+</style></head><body>
+<div id="topbar"></div>
+<nav class="sidebar">
+  <div class="sb-logo"><div class="sb-logo-tag">COA Complete Guide</div><h2>File 04</h2><p>Week 3 — Speed & Mocks</p></div>
+  <div class="sb-file-nav">
+    <a href="COA_00_Master_Index.html" class="sb-file-link"><span class="fnum">00</span>Master Index</a>
+    <a href="COA_01_Foundation.html" class="sb-file-link"><span class="fnum">01</span>Foundation & Exam Intel</a>
+    <a href="COA_02_Week1_CoreServices.html" class="sb-file-link"><span class="fnum">02</span>Week 1 — Core Services</a>
+    <a href="COA_03_Week2_NetworkStorage.html" class="sb-file-link"><span class="fnum">03</span>Week 2 — Network & Storage</a>
+    <a href="COA_04_Week3_MockExams.html" class="sb-file-link current"><span class="fnum">04</span>Week 3 — Speed & Mocks</a>
+    <a href="COA_05_UbuntuProject.html" class="sb-file-link"><span class="fnum">05</span>Ubuntu Server Project</a>
+  </div>
+  <div class="sb-section-label">Days 15–21</div>
+  <a href="#day15" class="sb-link"><span class="sb-dot"></span>Day 15 — Troubleshooting</a>
+  <a href="#day16" class="sb-link"><span class="sb-dot"></span>Day 16 — Horizon + Docs</a>
+  <a href="#day17" class="sb-link"><span class="sb-dot"></span>Day 17 — CLI Speed Tricks</a>
+  <a href="#day18" class="sb-link"><span class="sb-dot"></span>Day 18 — Weak Zones</a>
+  <a href="#day19" class="sb-link"><span class="sb-dot"></span>Day 19 — Mock Exam 1</a>
+  <a href="#day20" class="sb-link"><span class="sb-dot"></span>Day 20 — Mock Exam 2</a>
+  <a href="#day21" class="sb-link"><span class="sb-dot"></span>Day 21 — Final Day</a>
+</nav>
+<main class="main">
+  <div class="hero">
+    <div class="hero-grid"></div><div class="hero-glow"></div>
+    <div class="hero-eyebrow">File 04 — Days 15 through 21</div>
+    <h1>Week 3: <em>Speed & Mock Exams</em></h1>
+    <p>Two full 3-hour mock exams under real conditions, Horizon dashboard practice, CLI speed tricks, troubleshooting, and the complete exam day protocol. This week separates candidates who pass from those who don't.</p>
+  </div>
+
+  <div class="week-hdr"><span class="week-badge wb3">Week 3</span><span class="week-title">Horizon · Speed · Troubleshooting · Full Mocks</span></div>
+
+  <!-- DAY 15 -->
+  <div id="day15" class="day-card d-w3 open">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">15</div>
+      <div class="day-tw"><div class="day-title">Troubleshooting & Service Logs</div>
+      <div class="day-sub">Logs · Service health · Diagnostics · 2 hrs</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="card w3">
+        <div class="card-lbl w3">Task 15.1 — Exam Style</div>
+        <div class="card-q">Instance <strong>web-01</strong> shows status ERROR. Diagnose using service logs and CLI only. Fix the issue.</div>
+        <pre><code><span class="cm"># Check fault message first</span>
+openstack server show web-01 -c fault -c status -c vm_state
+
+<span class="cm"># Check compute services health</span>
+openstack compute service list
+
+<span class="cm"># Nova API logs</span>
+sudo journalctl -u nova-api --since "30 minutes ago" -n 100
+
+<span class="cm"># Nova compute logs</span>
+sudo journalctl -u nova-compute --since "30 minutes ago" -n 100
+
+<span class="cm"># Nova scheduler logs</span>
+sudo journalctl -u nova-scheduler --since "30 minutes ago" -n 50
+
+<span class="cm"># Neutron service logs</span>
+sudo journalctl -u neutron-server --since "30 minutes ago" -n 50
+
+<span class="cm"># Glance logs</span>
+sudo journalctl -u glance-api --since "30 minutes ago" -n 50
+
+<span class="cm"># All OpenStack services status</span>
+openstack service list --long</code></pre>
+      </div>
+
+      <div class="card w3">
+        <div class="card-lbl w3">Task 15.2 — Exam Style</div>
+        <div class="card-q">Project <strong>dev-team</strong> has hit its instance quota. Show current usage. Increase instance quota to 20. Increase volume quota to 15. Verify both changes.</div>
+        <pre><code><span class="cm"># Show current usage</span>
+openstack quota show --usage dev-team
+
+<span class="cm"># Increase quotas</span>
+openstack quota set dev-team --instances 20
+openstack quota set dev-team --volumes 15
+
+<span class="cm"># Verify</span>
+openstack quota show dev-team | grep -E "instances|volumes"</code></pre>
+      </div>
+
+      <div class="card w3">
+        <div class="card-lbl w3">Break Something — Fix It</div>
+        <div class="card-q">Intentionally break your environment, then diagnose and fix without looking at notes:</div>
+        <pre><code><span class="cm"># Break 1: Remove router subnet interface</span>
+openstack router remove subnet main-router app-subnet
+<span class="cm"># Now diagnose: why can't instances reach the internet?</span>
+<span class="cm"># Fix: openstack router add subnet main-router app-subnet</span>
+
+<span class="cm"># Break 2: Disable a network</span>
+openstack network set app-net --disable
+<span class="cm"># Now diagnose: why can't instances launch?</span>
+<span class="cm"># Fix: openstack network set app-net --enable</span>
+
+<span class="cm"># Break 3: Disassociate floating IP</span>
+openstack server remove floating ip web-01 $FIP
+<span class="cm"># Now diagnose: why is web-01 unreachable?</span>
+<span class="cm"># Fix: openstack server add floating ip web-01 $FIP</span></code></pre>
+      </div>
+
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 15 Goal:</strong> Identify any broken service in under 5 minutes using CLI + journalctl only.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 16 -->
+  <div id="day16" class="day-card d-w3">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">16</div>
+      <div class="day-tw"><div class="day-title">Horizon Dashboard + Docs Speed Navigation</div>
+      <div class="day-sub">GUI practice · Bookmark drills · 2 hrs</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="alert info"><div class="alert-icon">🖥️</div><div class="alert-body"><strong>Exam Uses Both CLI and Horizon</strong>Some tasks are faster in the dashboard. You need to be comfortable in both environments.</div></div>
+
+      <div class="card w3">
+        <div class="card-lbl w3">Horizon Navigation Paths — All Domains</div>
+        <p style="font-size:.77rem;color:var(--muted);margin-bottom:.6rem">IDENTITY</p>
+        <div class="nav-path"><span>Identity</span><span>›</span><span>Projects</span></div>
+        <div class="nav-path"><span>Identity</span><span>›</span><span>Users</span></div>
+        <div class="nav-path"><span>Identity</span><span>›</span><span>Groups</span></div>
+        <div class="nav-path"><span>Identity</span><span>›</span><span>Roles</span></div>
+        <p style="font-size:.77rem;color:var(--muted);margin:.9rem 0 .6rem">COMPUTE</p>
+        <div class="nav-path"><span>Project</span><span>›</span><span>Compute</span><span>›</span><span>Instances</span></div>
+        <div class="nav-path"><span>Project</span><span>›</span><span>Compute</span><span>›</span><span>Images</span></div>
+        <div class="nav-path"><span>Admin</span><span>›</span><span>Compute</span><span>›</span><span>Flavors</span></div>
+        <div class="nav-path"><span>Admin</span><span>›</span><span>Compute</span><span>›</span><span>Host Aggregates</span></div>
+        <p style="font-size:.77rem;color:var(--muted);margin:.9rem 0 .6rem">NETWORKING</p>
+        <div class="nav-path"><span>Project</span><span>›</span><span>Network</span><span>›</span><span>Network Topology</span></div>
+        <div class="nav-path"><span>Project</span><span>›</span><span>Network</span><span>›</span><span>Networks</span></div>
+        <div class="nav-path"><span>Project</span><span>›</span><span>Network</span><span>›</span><span>Routers</span></div>
+        <div class="nav-path"><span>Project</span><span>›</span><span>Network</span><span>›</span><span>Security Groups</span></div>
+        <div class="nav-path"><span>Project</span><span>›</span><span>Network</span><span>›</span><span>Floating IPs</span></div>
+        <p style="font-size:.77rem;color:var(--muted);margin:.9rem 0 .6rem">STORAGE</p>
+        <div class="nav-path"><span>Project</span><span>›</span><span>Volumes</span><span>›</span><span>Volumes</span></div>
+        <div class="nav-path"><span>Project</span><span>›</span><span>Volumes</span><span>›</span><span>Snapshots</span></div>
+        <div class="nav-path"><span>Project</span><span>›</span><span>Object Store</span><span>›</span><span>Containers</span></div>
+        <div class="nav-path"><span>Project</span><span>›</span><span>Orchestration</span><span>›</span><span>Stacks</span></div>
+      </div>
+
+      <div class="card w3">
+        <div class="card-lbl w3">CLI vs Horizon — Use the Right Tool</div>
+        <table class="tbl">
+          <tr><th>Task</th><th>Best Tool</th></tr>
+          <tr><td>Launch instance</td><td>CLI — one command</td></tr>
+          <tr><td>Associate floating IP</td><td>Either — Horizon dropdown is fast</td></tr>
+          <tr><td>View network topology</td><td>Horizon only — visual map</td></tr>
+          <tr><td>Create security group rules</td><td>Horizon — dropdown is easier</td></tr>
+          <tr><td>View VNC console</td><td>Horizon — actually opens the console</td></tr>
+          <tr><td>User + role assignment</td><td>CLI — more reliable</td></tr>
+          <tr><td>Deploy Heat stack</td><td>CLI — YAML is easier to edit</td></tr>
+          <tr><td>Upload image</td><td>CLI for large files</td></tr>
+        </table>
+      </div>
+
+      <div class="card w3">
+        <div class="card-lbl w3">Docs Speed Drill — Time Each</div>
+        <table class="tbl">
+          <tr><th>Find in docs.openstack.org</th><th>Target</th></tr>
+          <tr><td>openstack user create options</td><td>&lt;45s</td></tr>
+          <tr><td>Heat template version strings</td><td>&lt;60s</td></tr>
+          <tr><td>OS::Nova::Server properties</td><td>&lt;60s</td></tr>
+          <tr><td>openstack router set syntax</td><td>&lt;45s</td></tr>
+          <tr><td>Swift ACL format guide</td><td>&lt;90s</td></tr>
+          <tr><td>get_attr intrinsic function</td><td>&lt;60s</td></tr>
+        </table>
+      </div>
+
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 16 Goal:</strong> Find any CLI reference or Heat resource type in under 90 seconds. Know all Horizon paths.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 17 -->
+  <div id="day17" class="day-card d-w3">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">17</div>
+      <div class="day-tw"><div class="day-title">CLI Speed Tricks — Screen, Output Formatting, Aliases</div>
+      <div class="day-sub">Time multipliers · Learn these once, use forever · 2 hrs</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="card w3">
+        <div class="card-lbl w3">The screen Command — Never Wait Idle</div>
+        <div class="card-desc">When <span class="ic">--wait</span> blocks for 60+ seconds, screen lets you work in another window simultaneously.</div>
+        <pre><code><span class="cm"># Start screen</span>
+screen
+
+<span class="cm"># New window:       Ctrl+A then C</span>
+<span class="cm"># Next window:      Ctrl+A then N</span>
+<span class="cm"># Previous window:  Ctrl+A then P</span>
+<span class="cm"># Jump to window N: Ctrl+A then 0/1/2</span>
+<span class="cm"># Split screen:     Ctrl+A then S</span>
+<span class="cm"># Move to pane:     Ctrl+A then Tab</span>
+<span class="cm"># Detach:           Ctrl+A then D</span>
+<span class="cm"># Reattach:         screen -r</span>
+
+<span class="cm"># EXAM STRATEGY: Window 0 = long-running tasks</span>
+<span class="cm"># Window 1 = quick tasks while waiting</span></code></pre>
+      </div>
+
+      <div class="card w3">
+        <div class="card-lbl w3">Output Formatting — Extract IDs Instantly</div>
+        <pre><code><span class="cm"># Get just the value of one field</span>
+openstack project show dev-team -f value -c id
+
+<span class="cm"># Capture into variable</span>
+PROJECT_ID=$(openstack project show dev-team -f value -c id)
+NET_ID=$(openstack network show app-net -f value -c id)
+FIP=$(openstack floating ip list -f value -c "Floating IP Address" | head -1)
+
+<span class="cm"># Show only specific columns</span>
+openstack server list -c Name -c Status -c Networks
+
+<span class="cm"># Filter by property</span>
+openstack server list --status ERROR
+openstack server list --status ACTIVE
+
+<span class="cm"># Pipe to grep</span>
+openstack server list | grep web
+
+<span class="cm"># JSON output for scripting</span>
+openstack server show web-01 -f json | python3 -m json.tool</code></pre>
+      </div>
+
+      <div class="card w3">
+        <div class="card-lbl w3">Exam-Start Aliases — Set These First Thing</div>
+        <pre><code><span class="cm"># Add to ~/.bashrc OR run at exam start</span>
+alias os='openstack'
+alias osl='openstack server list'
+alias osn='openstack network list'
+alias osv='openstack volume list'
+alias osi='openstack image list'
+
+function getid() {
+  openstack $1 show $2 -f value -c id
+}
+<span class="cm"># Usage: getid server web-01</span>
+<span class="cm"># Usage: getid network app-net</span>
+<span class="cm"># Usage: getid project dev-team</span>
+
+source ~/.bashrc</code></pre>
+      </div>
+
+      <div class="card w3">
+        <div class="card-lbl w3">Shell Shortcuts That Save Minutes</div>
+        <pre><code><span class="cm"># Repeat last command</span>
+!!
+
+<span class="cm"># Search command history</span>
+Ctrl+R  # type partial command, Enter to run
+
+<span class="cm"># Jump to start/end of line</span>
+Ctrl+A  # start
+Ctrl+E  # end
+
+<span class="cm"># Delete to start/end</span>
+Ctrl+U  # delete to start
+Ctrl+K  # delete to end
+
+<span class="cm"># Reuse last argument from previous command</span>
+Alt+.
+
+<span class="cm"># Run two commands sequentially</span>
+openstack server create web-01 --wait && openstack server add floating ip web-01 $FIP
+
+<span class="cm"># Switch project context inline</span>
+openstack --os-project-name dev-team server list</code></pre>
+      </div>
+
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 17 Goal:</strong> Open screen at session start. Use -f value -c for all ID grabs. Aliases set automatically.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 18 -->
+  <div id="day18" class="day-card d-w3">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">18</div>
+      <div class="day-tw"><div class="day-title">Weak Zone Drilling — 3 Hours Targeted</div>
+      <div class="day-sub">Find your 3 slowest areas · Fix them today</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="card w3">
+        <div class="card-lbl w3">Identify Your Weak Zones</div>
+        <div class="card-desc">Look back at Days 1–14. Which tasks took you over 4 minutes? Which did you look up? Write down your 3 slowest and spend all of today on those only.</div>
+      </div>
+      <div class="card w3">
+        <div class="card-lbl w3">Common Weak Zone 1 — Swift ACL Syntax</div>
+        <pre><code><span class="cm"># Drill until automatic — no looking up</span>
+openstack container create test-acl-container
+
+<span class="cm"># Public read</span>
+openstack container set test-acl-container --property "X-Container-Read=.r:*,.rlistings"
+
+<span class="cm"># Private again</span>
+openstack container unset test-acl-container --property "X-Container-Read"
+
+<span class="cm"># Auto-delete object</span>
+openstack object create test-acl-container /etc/hostname --name test.txt
+openstack object set test-acl-container test.txt --property "X-Delete-After=3600"
+
+<span class="cm"># Verify everything</span>
+openstack container show test-acl-container
+openstack object show test-acl-container test.txt</code></pre>
+      </div>
+      <div class="card w3">
+        <div class="card-lbl w3">Common Weak Zone 2 — Heat get_attr / Indentation</div>
+        <pre><code><span class="cm"># Write this from memory — no copying</span>
+<span class="cm"># Common get_attr patterns:</span>
+{ get_attr: [server, first_address] }
+{ get_attr: [server, addresses, network-name, 0, addr] }
+{ get_attr: [fip, floating_ip_address] }
+{ get_attr: [net, id] }
+{ get_attr: [subnet, id] }
+
+<span class="cm"># YAML indentation rules — 2 spaces, NO tabs</span>
+resources:          <span class="cm"># top level = 0 indent</span>
+  my_server:        <span class="cm"># 2 spaces</span>
+    type: OS::Nova::Server    <span class="cm"># 4 spaces</span>
+    properties:     <span class="cm"># 4 spaces</span>
+      name: test    <span class="cm"># 6 spaces</span>
+      networks:     <span class="cm"># 6 spaces</span>
+        - network: private    <span class="cm"># 8 spaces (list item)</span></code></pre>
+      </div>
+      <div class="card w3">
+        <div class="card-lbl w3">Common Weak Zone 3 — Router Full Setup from Memory</div>
+        <pre><code><span class="cm"># Write this entire sequence without any reference</span>
+openstack network create mynet
+openstack subnet create mysub --network mynet --subnet-range 10.50.0.0/24 --dns-nameserver 8.8.8.8
+openstack router create myrouter
+openstack router set myrouter --external-gateway public
+openstack router add subnet myrouter mysub
+openstack server create myvm --image ubuntu-jammy --flavor app.small --network mynet --wait
+FIP=$(openstack floating ip create public -f value -c floating_ip_address)
+openstack server add floating ip myvm $FIP
+openstack server show myvm -c addresses</code></pre>
+      </div>
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 18 Goal:</strong> Your previous weak zones now run under 2 minutes each from memory.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 19 -->
+  <div id="day19" class="day-card d-w3">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">19</div>
+      <div class="day-tw"><div class="day-title">Mock Exam 1 — AcmeCorp — Full 3 Hours</div>
+      <div class="day-sub">No notes · docs.openstack.org only · Timer running</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="alert warn"><div class="alert-icon">⏱️</div><div class="alert-body"><strong>SET A 3-HOUR TIMER NOW. No notes. No Google. docs.openstack.org only. Simulate real exam conditions exactly.</strong></div></div>
+      <div class="card w3">
+        <div class="card-lbl w3">Scenario: AcmeCorp Cloud Setup</div>
+        <ul class="checklist">
+          <li>Create project <strong>acme-prod</strong> and user <strong>acme-admin</strong>. Assign admin role.</li>
+          <li>Create project <strong>acme-dev</strong> and user <strong>acme-dev1</strong>. Assign member role on acme-dev.</li>
+          <li>Set quota on acme-dev: 5 instances, 10 vCPUs, 10240 MB RAM, 5 volumes.</li>
+          <li>Upload image as <strong>acme-base</strong> (qcow2, public). Property: env=production.</li>
+          <li>Create flavor <strong>acme.small</strong>: 2 vCPU, 1024 MB, 20 GB disk.</li>
+          <li>Create network <strong>acme-net</strong> (10.0.0.0/24, DNS 8.8.8.8). Router with public gateway.</li>
+          <li>Create security group <strong>acme-sg</strong>: SSH, HTTP, HTTPS, ICMP.</li>
+          <li>Launch <strong>acme-web-01</strong>: acme-base image, acme.small, acme-net, acme-sg, keypair exam-key.</li>
+          <li>Allocate floating IP, associate to acme-web-01. Verify addresses.</li>
+          <li>Snapshot acme-web-01 as <strong>acme-web-snap</strong>. Launch <strong>acme-web-02</strong> from snapshot.</li>
+          <li>Create 25 GB volume <strong>acme-data</strong>. Attach to acme-web-01. Snapshot it.</li>
+          <li>Create container <strong>acme-assets</strong>. Upload a file. Make it publicly readable. Verify.</li>
+          <li>Write and deploy Heat stack <strong>acme-stack</strong>: network + subnet + 1 instance with floating IP.</li>
+          <li>Show stack outputs. List all stack resources.</li>
+          <li>Delete acme-stack cleanly.</li>
+        </ul>
+      </div>
+      <div class="card w3">
+        <div class="card-lbl w3">After Timer — Debrief</div>
+        <table class="tbl">
+          <tr><th>Benchmark</th><th>Target</th></tr>
+          <tr><td>Tasks completed</td><td>80%+ (12/15)</td></tr>
+          <tr><td>Per-task average time</td><td>&lt;10 minutes</td></tr>
+          <tr><td>Verification run</td><td>After every task</td></tr>
+          <tr><td>Heat template written from scratch</td><td>Yes</td></tr>
+        </table>
+      </div>
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 19 Goal:</strong> 80%+ tasks complete in 3 hours. Log every task you didn't finish — these become Day 20 focus.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 20 -->
+  <div id="day20" class="day-card d-w3">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">20</div>
+      <div class="day-tw"><div class="day-title">Mock Exam 2 — FinanceApp — Push for 90%</div>
+      <div class="day-sub">Harder scenario · Different domain emphasis · 3 hours</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="alert warn"><div class="alert-icon">⏱️</div><div class="alert-body"><strong>3-HOUR TIMER. No notes. Push harder than yesterday.</strong></div></div>
+      <div class="card w3">
+        <div class="card-lbl w3">Scenario: FinanceApp Multi-Tier Cloud</div>
+        <ul class="checklist">
+          <li>Create projects <strong>fin-frontend</strong>, <strong>fin-backend</strong>, <strong>fin-db</strong>.</li>
+          <li>Create group <strong>fin-devs</strong>. Add 3 new users. Assign group member role on all 3 projects.</li>
+          <li>Upload image <strong>fin-ubuntu</strong> as private. Share with fin-backend. Accept from fin-backend context.</li>
+          <li>Create flavors: fin.micro (1/512/10), fin.small (2/1024/20), fin.medium (4/4096/40).</li>
+          <li>Create 2 networks: <strong>frontend-net</strong> (10.1.0.0/24) and <strong>backend-net</strong> (10.2.0.0/24). One router connecting both to public.</li>
+          <li>Create security group <strong>db-sg</strong>: allow port 5432 only from 10.2.0.0/24 CIDR.</li>
+          <li>Launch <strong>fin-web</strong> on frontend-net. Launch <strong>fin-api</strong> on backend-net with db-sg.</li>
+          <li>Associate floating IP to fin-web ONLY.</li>
+          <li>Create 50 GB volume <strong>fin-db-storage</strong>. Attach to fin-api. Snapshot it as <strong>fin-db-snap</strong>.</li>
+          <li>Create volume from snapshot. Attach to new instance <strong>fin-db-replica</strong>.</li>
+          <li>Create container <strong>fin-logs</strong>. Upload 2 files. Set auto-delete 7200 seconds on both.</li>
+          <li>Write Heat template: 2 networks + 1 instance on each. Deploy as <strong>fin-stack</strong>.</li>
+          <li>Intentionally remove router interface for backend-net. Diagnose and fix without notes.</li>
+          <li>Show quota usage for all 3 fin- projects.</li>
+          <li>Delete fin-stack. Full resource cleanup.</li>
+        </ul>
+      </div>
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 20 Goal:</strong> 90%+ complete in 3 hours. Per-task time under 5 minutes.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 21 -->
+  <div id="day21" class="day-card d-w3">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">21</div>
+      <div class="day-tw"><div class="day-title">Final Day — Light, Confident, Ready</div>
+      <div class="day-sub">Max 1 hour study · Warm-up only · Sleep early</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="alert success"><div class="alert-icon">✅</div><div class="alert-body"><strong>Rules for Today</strong>No new topics. No panic reading. Max 1 hour. Warm-up only. Early sleep is more valuable than late cramming.</div></div>
+      <div class="card w3">
+        <div class="card-lbl w3">10-Minute Warm-Up Sequence — Do This, Nothing More</div>
+        <pre><code>openstack service list
+openstack user create warmup-user --password Test123
+openstack project create warmup-proj
+openstack role add --project warmup-proj --user warmup-user member
+openstack image list
+openstack flavor list
+openstack network list
+openstack router list
+openstack volume list
+openstack stack list
+<span class="cm"># Clean up</span>
+openstack project delete warmup-proj
+openstack user delete warmup-user</code></pre>
+      </div>
+      <div class="card w3">
+        <div class="card-lbl w3">Final Exam Day Checklist</div>
+        <ul class="checklist">
+          <li>Internet speed test — 10Mbps+ confirmed</li>
+          <li>Chrome open, bookmarks in place, all extensions disabled</li>
+          <li>Webcam + microphone tested</li>
+          <li>Government-issued photo ID on desk</li>
+          <li>Keyboard set to US English layout</li>
+          <li>Second monitor disconnected</li>
+          <li>Empty room confirmed — family/roommates notified</li>
+          <li>Clean desk — no papers, no phone</li>
+          <li>Water in clear glass (allowed)</li>
+          <li>Exam login credentials ready</li>
+        </ul>
+      </div>
+      <div class="card w3" style="background:linear-gradient(135deg,var(--surface),rgba(52,211,153,.08));border-color:rgba(52,211,153,.25);">
+        <div class="card-lbl w3">The Horus Advantage — You Are Ready</div>
+        <div class="card-desc" style="color:var(--text);">You have real OpenStack experience from Afritec. You deployed MicroStack on bare metal. You managed 200+ servers with Ansible. You configured HAProxy + Octavia load balancers. You installed Nagios XI for monitoring. The COA exam tests exactly what you have been doing professionally for years.<br><br>The 21-day guide, the supplementary intel, and the Ubuntu project — together these cover every inch of the exam. You have the knowledge. You have the practice. You have the experience.<br><br><strong style="color:var(--accent3);">Go get certified. Then go get hired at Canonical.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <a href="COA_03_Week2_NetworkStorage.html" class="nav-btn">← File 03 Week 2</a>
+    <a href="COA_05_UbuntuProject.html" class="nav-btn next">File 05 — Ubuntu Server Project →</a>
+  </div>
+</main>
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+function toggle(h){const c=h.parentElement;c.classList.toggle('open');}
+window.addEventListener('scroll',()=>{const s=window.scrollY,h=document.body.scrollHeight-window.innerHeight;const tb=document.getElementById('topbar');if(tb)tb.style.width=(s/h*100)+'%';const st=document.getElementById('scrollTop');if(st)st.classList.toggle('show',s>300);document.querySelectorAll('.sb-link').forEach(a=>{const id=a.getAttribute('href');if(!id||!id.startsWith('#'))return;const el=document.getElementById(id.slice(1));if(el)a.classList.toggle('active',s>=el.offsetTop-130);});});
+</script>
+</body></html>
