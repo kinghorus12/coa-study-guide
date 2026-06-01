@@ -1,0 +1,630 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>COA File 02 — Week 1 Core Services</title>
+<style>:root {
+  --bg:#0b0d14;--surface:#13161f;--surface2:#1a1d2e;--surface3:#1f2235;
+  --border:#252840;--border2:#2f3354;
+  --accent:#6ee7f7;--accent2:#a78bfa;--accent3:#34d399;
+  --orange:#fb923c;--red:#f87171;--yellow:#fbbf24;--pink:#f472b6;--blue:#60a5fa;
+  --text:#e2e8f0;--muted:#64748b;--code-bg:#090b10;
+  --w1:#38bdf8;--w2:#fbbf24;--w3:#34d399;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;line-height:1.65;}
+#topbar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;z-index:999;transition:width .1s;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;z-index:100;}
+.sb-logo{padding:1.2rem 1.2rem .9rem;border-bottom:1px solid var(--border);}
+.sb-logo-tag{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
+.sb-logo h2{font-size:.95rem;font-weight:800;}
+.sb-logo p{font-size:.68rem;color:var(--muted);margin-top:.15rem;}
+.sb-file-nav{padding:.6rem 1.2rem;display:flex;flex-direction:column;gap:.2rem;border-bottom:1px solid var(--border);}
+.sb-file-link{display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;border-radius:6px;font-size:.72rem;color:var(--muted);text-decoration:none;transition:all .18s;}
+.sb-file-link:hover{background:rgba(255,255,255,.04);color:var(--text);}
+.sb-file-link.current{background:rgba(110,231,247,.08);color:var(--accent);font-weight:600;}
+.sb-file-link .fnum{width:20px;height:20px;border-radius:4px;background:rgba(110,231,247,.1);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;flex-shrink:0;}
+.sb-section-label{padding:.7rem 1.2rem .2rem;font-size:.57rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);}
+.sb-link{display:flex;align-items:center;gap:.6rem;padding:.42rem 1.2rem;font-size:.76rem;color:#94a3b8;text-decoration:none;transition:all .18s;border-left:2px solid transparent;}
+.sb-link:hover,.sb-link.active{color:var(--text);background:rgba(110,231,247,.05);border-left-color:var(--accent);}
+.sb-dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .18s;}
+.sb-link:hover .sb-dot,.sb-link.active .sb-dot{background:var(--accent);}
+.main{margin-left:260px;padding:2.5rem 3.5rem;max-width:1000px;}
+.hero{position:relative;overflow:hidden;border-radius:14px;padding:2.5rem;margin-bottom:2.5rem;background:var(--surface2);border:1px solid var(--border2);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(110,231,247,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(110,231,247,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.hero-glow{position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(167,139,250,.18) 0%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:.7rem;display:flex;align-items:center;gap:.6rem;}
+.hero-eyebrow::before{content:'';display:block;width:22px;height:1px;background:var(--accent);}
+.hero h1{font-size:2rem;font-weight:900;line-height:1.1;margin-bottom:.7rem;}
+.hero h1 em{font-style:normal;color:var(--accent);}
+.hero p{color:#94a3b8;font-size:.88rem;max-width:580px;line-height:1.7;}
+.sec-hdr{display:flex;align-items:flex-start;gap:1rem;margin:3rem 0 1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+.sec-num{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;flex-shrink:0;}
+.sn-cyan{background:rgba(110,231,247,.12);color:var(--accent);border:1px solid rgba(110,231,247,.2);}
+.sn-purple{background:rgba(167,139,250,.12);color:var(--accent2);border:1px solid rgba(167,139,250,.2);}
+.sn-green{background:rgba(52,211,153,.12);color:var(--accent3);border:1px solid rgba(52,211,153,.2);}
+.sn-orange{background:rgba(251,146,60,.12);color:var(--orange);border:1px solid rgba(251,146,60,.2);}
+.sn-yellow{background:rgba(251,191,36,.12);color:var(--yellow);border:1px solid rgba(251,191,36,.2);}
+.sn-pink{background:rgba(244,114,182,.12);color:var(--pink);border:1px solid rgba(244,114,182,.2);}
+.sn-blue{background:rgba(96,165,250,.12);color:var(--blue);border:1px solid rgba(96,165,250,.2);}
+.sec-ey{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.25rem;}
+.sec-title{font-size:1.4rem;font-weight:800;line-height:1.2;}
+.sec-desc{font-size:.81rem;color:var(--muted);margin-top:.25rem;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.4rem;margin-bottom:1.1rem;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
+.card.cyan::before{background:var(--accent);}
+.card.purple::before{background:var(--accent2);}
+.card.green::before{background:var(--accent3);}
+.card.orange::before{background:var(--orange);}
+.card.yellow::before{background:var(--yellow);}
+.card.pink::before{background:var(--pink);}
+.card.blue::before{background:var(--blue);}
+.card.w1::before{background:var(--w1);}
+.card.w2::before{background:var(--w2);}
+.card.w3::before{background:var(--w3);}
+.card-lbl{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:.55rem;}
+.card-lbl.cyan{color:var(--accent)}.card-lbl.purple{color:var(--accent2)}.card-lbl.green{color:var(--accent3)}
+.card-lbl.orange{color:var(--orange)}.card-lbl.yellow{color:var(--yellow)}.card-lbl.pink{color:var(--pink)}
+.card-lbl.blue{color:var(--blue)}.card-lbl.w1{color:var(--w1)}.card-lbl.w2{color:var(--w2)}.card-lbl.w3{color:var(--w3)}
+.card-q{font-weight:700;font-size:.95rem;margin-bottom:.5rem;line-height:1.5;}
+.card-desc{font-size:.81rem;color:#94a3b8;line-height:1.7;margin-bottom:.8rem;}
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;overflow-x:auto;font-size:.76rem;line-height:1.65;margin:.6rem 0;}
+code{font-family:'Cascadia Code','Fira Code','Courier New',monospace;}
+.cm{color:#6272a4;font-style:italic;}.kw{color:#ff79c6;}.fn{color:#50fa7b;}.str{color:#f1fa8c;}.num{color:#bd93f9;}.key{color:#8be9fd;}.val{color:#ffb86c;}.ok{color:#50fa7b;font-weight:bold;}.er{color:#ff5555;font-weight:bold;}
+.alert{border-radius:8px;padding:.9rem 1.1rem;margin:.7rem 0;font-size:.81rem;line-height:1.65;display:flex;gap:.8rem;}
+.alert-icon{font-size:1rem;flex-shrink:0;margin-top:.05rem;}
+.alert-body strong{display:block;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.25rem;}
+.alert.info{background:rgba(110,231,247,.06);border:1px solid rgba(110,231,247,.18);}
+.alert.info strong{color:var(--accent);}
+.alert.warn{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);}
+.alert.warn strong{color:var(--yellow);}
+.alert.danger{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.2);}
+.alert.danger strong{color:var(--red);}
+.alert.success{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);}
+.alert.success strong{color:var(--accent3);}
+.steps{list-style:none;counter-reset:step;margin:.4rem 0;}
+.steps li{counter-increment:step;display:flex;gap:.8rem;margin-bottom:.8rem;font-size:.83rem;line-height:1.6;align-items:flex-start;}
+.steps li::before{content:counter(step);min-width:24px;height:24px;background:var(--surface3);color:var(--accent);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.68rem;flex-shrink:0;margin-top:.1rem;}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
+.checklist li{display:flex;align-items:flex-start;gap:.7rem;font-size:.83rem;color:#94a3b8;line-height:1.5;}
+.checklist li::before{content:'☐';color:var(--muted);flex-shrink:0;font-size:.95rem;line-height:1.3;}
+.tbl{width:100%;border-collapse:collapse;margin:.7rem 0;font-size:.8rem;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.tbl th{background:var(--surface2);padding:.6rem .85rem;text-align:left;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);}
+.tbl td{padding:.6rem .85rem;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:rgba(255,255,255,.015);}
+.ic{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:.1em .35em;font-family:monospace;font-size:.8em;}
+.goal{display:flex;align-items:flex-start;gap:.7rem;background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.2);border-radius:6px;padding:.85rem 1rem;margin-top:1rem;font-size:.81rem;}
+.goal strong{color:var(--accent3);}
+.day-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:1.2rem;overflow:hidden;}
+.day-hdr{display:flex;align-items:center;gap:.9rem;padding:1rem 1.3rem;border-bottom:1px solid transparent;cursor:pointer;user-select:none;transition:background .18s;}
+.day-hdr:hover{background:rgba(255,255,255,.025);}
+.day-card.open .day-hdr{border-bottom-color:var(--border);}
+.day-num{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex-shrink:0;}
+.d-w1 .day-num{background:rgba(56,189,248,.15);color:var(--w1);}
+.d-w2 .day-num{background:rgba(251,191,36,.15);color:var(--w2);}
+.d-w3 .day-num{background:rgba(52,211,153,.15);color:var(--w3);}
+.day-tw{flex:1;}
+.day-title{font-weight:700;font-size:.95rem;}
+.day-sub{font-size:.72rem;color:var(--muted);margin-top:.1rem;}
+.day-chev{color:var(--muted);transition:transform .28s;font-size:1.1rem;}
+.day-card.open .day-chev{transform:rotate(180deg);}
+.day-body{display:none;padding:1.4rem;}
+.day-card.open .day-body{display:block;}
+.week-hdr{display:flex;align-items:center;gap:.9rem;margin:2.5rem 0 1.2rem;padding-bottom:.9rem;border-bottom:1px solid var(--border);}
+.week-badge{padding:.35rem .9rem;border-radius:6px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.wb1{background:rgba(56,189,248,.15);color:var(--w1);border:1px solid rgba(56,189,248,.3);}
+.wb2{background:rgba(251,191,36,.15);color:var(--w2);border:1px solid rgba(251,191,36,.3);}
+.wb3{background:rgba(52,211,153,.15);color:var(--w3);border:1px solid rgba(52,211,153,.3);}
+.week-title{font-size:1.2rem;font-weight:800;}
+.tag{display:inline-block;padding:.15rem .5rem;border-radius:4px;font-size:.65rem;font-weight:700;}
+.t-id{background:rgba(167,139,250,.15);color:#a78bfa;}
+.t-img{background:rgba(244,114,182,.15);color:#f472b6;}
+.t-cmp{background:rgba(56,189,248,.15);color:#38bdf8;}
+.t-net{background:rgba(251,191,36,.15);color:#fbbf24;}
+.t-blk{background:rgba(52,211,153,.15);color:#34d399;}
+.t-obj{background:rgba(251,146,60,.15);color:#fb923c;}
+.t-ht{background:rgba(248,113,113,.15);color:#f87171;}
+.nav-btns{display:flex;gap:1rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);}
+.nav-btn{display:flex;align-items:center;gap:.6rem;padding:.7rem 1.2rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);font-size:.78rem;transition:all .2s;flex:1;}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent);}
+.nav-btn.next{justify-content:flex-end;}
+#scrollTop{position:fixed;bottom:1.5rem;right:1.5rem;width:40px;height:40px;background:var(--surface2);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .3s;z-index:200;color:var(--accent);font-size:.95rem;}
+#scrollTop.show{opacity:1;}
+@media(max-width:900px){.sidebar{display:none;}.main{margin-left:0;padding:1.5rem;}}
+</style></head><body>
+<div id="topbar"></div>
+<nav class="sidebar">
+  <div class="sb-logo"><div class="sb-logo-tag">COA Complete Guide</div><h2>File 02</h2><p>Week 1 — Core Services</p></div>
+  <div class="sb-file-nav">
+    <a href="COA_00_Master_Index.html" class="sb-file-link"><span class="fnum">00</span>Master Index</a>
+    <a href="COA_01_Foundation.html" class="sb-file-link"><span class="fnum">01</span>Foundation & Exam Intel</a>
+    <a href="COA_02_Week1_CoreServices.html" class="sb-file-link current"><span class="fnum">02</span>Week 1 — Core Services</a>
+    <a href="COA_03_Week2_NetworkStorage.html" class="sb-file-link"><span class="fnum">03</span>Week 2 — Network & Storage</a>
+    <a href="COA_04_Week3_MockExams.html" class="sb-file-link"><span class="fnum">04</span>Week 3 — Speed & Mocks</a>
+    <a href="COA_05_UbuntuProject.html" class="sb-file-link"><span class="fnum">05</span>Ubuntu Server Project</a>
+  </div>
+  <div class="sb-section-label">Days 1–7</div>
+  <a href="#day1" class="sb-link"><span class="sb-dot"></span>Day 1 — Keystone Basics</a>
+  <a href="#day2" class="sb-link"><span class="sb-dot"></span>Day 2 — Keystone Deep Dive</a>
+  <a href="#day3" class="sb-link"><span class="sb-dot"></span>Day 3 — Glance Images</a>
+  <a href="#day4" class="sb-link"><span class="sb-dot"></span>Day 4 — Nova Part 1</a>
+  <a href="#day5" class="sb-link"><span class="sb-dot"></span>Day 5 — Nova Part 2</a>
+  <a href="#day6" class="sb-link"><span class="sb-dot"></span>Day 6 — Nova Part 3</a>
+  <a href="#day7" class="sb-link"><span class="sb-dot"></span>Day 7 — Week Review</a>
+</nav>
+<main class="main">
+  <div class="hero">
+    <div class="hero-grid"></div><div class="hero-glow"></div>
+    <div class="hero-eyebrow">File 02 — Days 1 through 7</div>
+    <h1>Week 1: <em>Core Services</em></h1>
+    <p>Identity (Keystone), Images (Glance), and Compute (Nova). Together these account for 55% of the exam. Every task below is exam-format with full CLI solutions. Do not read — do.</p>
+  </div>
+
+  <div class="week-hdr"><span class="week-badge wb1">Week 1</span><span class="week-title">Identity · Images · Compute — 55% of Exam</span></div>
+
+  <!-- DAY 1 -->
+  <div id="day1" class="day-card d-w1 open">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">1</div>
+      <div class="day-tw"><div class="day-title">Environment Setup + Keystone Basics</div>
+      <div class="day-sub"><span class="tag t-id">Identity 15%</span> · Target: 2–3 hrs</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="alert info"><div class="alert-icon">🎯</div><div class="alert-body"><strong>Day 1 Rule</strong>Complete all tasks from scratch in under 15 minutes total with zero lookups by end of day.</div></div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 1.1 — Exam Style</div>
+        <div class="card-q">Verify your OpenStack environment is fully healthy. List all registered services, endpoints, and confirm your current user context.</div>
+        <pre><code><span class="cm"># Verify services registered</span>
+openstack service list
+
+<span class="cm"># Verify all endpoints exist (public, internal, admin)</span>
+openstack endpoint list
+
+<span class="cm"># Show service catalog</span>
+openstack catalog list
+
+<span class="cm"># Confirm your context</span>
+openstack token issue -c username -c project_name -c expires</code></pre>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 1.2 — Exam Style</div>
+        <div class="card-q">Create a project called <strong>dev-team</strong>. Create user <strong>alice</strong> with password <strong>SecurePass123</strong>. Assign alice the <strong>member</strong> role on dev-team. Verify the assignment.</div>
+        <pre><code><span class="cm"># Create project in Default domain</span>
+openstack project create dev-team
+
+<span class="cm"># Create user</span>
+openstack user create alice --password SecurePass123
+
+<span class="cm"># Assign role</span>
+openstack role add --project dev-team --user alice member
+
+<span class="cm"># VERIFY — always do this</span>
+openstack role assignment list --project dev-team --user alice --names</code></pre>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 1.3 — Exam Style</div>
+        <div class="card-q">Create 3 users: <strong>bob</strong>, <strong>carol</strong>, <strong>dave</strong>. Create group <strong>developers</strong>. Add all 3 to the group. Assign developers the <strong>reader</strong> role on project <strong>demo</strong>.</div>
+        <pre><code>for user in bob carol dave; do
+  openstack user create $user --password Pass123
+done
+
+openstack group create developers
+
+for user in bob carol dave; do
+  openstack group add user developers $user
+done
+
+openstack role add --project demo --group developers reader
+
+<span class="cm"># Verify group membership</span>
+openstack group contains user developers bob
+openstack role assignment list --project demo --names</code></pre>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 1.4 — Exam Style (Custom Domain)</div>
+        <div class="card-q">Create domain <strong>acme</strong>. Inside it, create project <strong>acme-prod</strong> and user <strong>acme-admin</strong>. Assign acme-admin the <strong>admin</strong> role on acme-prod.</div>
+        <pre><code><span class="cm"># Create domain</span>
+openstack domain create acme
+
+<span class="cm"># Create project in domain</span>
+openstack project create acme-prod --domain acme
+
+<span class="cm"># Create user in domain</span>
+openstack user create acme-admin --domain acme --password AcmePass123
+
+<span class="cm"># Assign role — note both --user-domain and --project-domain flags</span>
+openstack role add \
+  --project acme-prod --project-domain acme \
+  --user acme-admin --user-domain acme \
+  admin
+
+<span class="cm"># Verify</span>
+openstack role assignment list --project acme-prod --project-domain acme --names</code></pre>
+      </div>
+
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 1 Goal:</strong> All 4 tasks from scratch in 15 minutes. No notes.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 2 -->
+  <div id="day2" class="day-card d-w1">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">2</div>
+      <div class="day-tw"><div class="day-title">Keystone Deep Dive — Quotas, App Credentials, Docs</div>
+      <div class="day-sub"><span class="tag t-id">Identity</span> · 2–3 hrs</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="card w1">
+        <div class="card-lbl w1">Task 2.1 — Exam Style</div>
+        <div class="card-q">Project <strong>dev-team</strong> is consuming too many resources. Set its quota to: max <strong>5 instances</strong>, <strong>10 vCPUs</strong>, <strong>20480 MB RAM</strong>, <strong>10 volumes</strong>, <strong>100 GB total volume storage</strong>.</div>
+        <pre><code><span class="cm"># Set compute quota</span>
+openstack quota set dev-team \
+  --instances 5 \
+  --cores 10 \
+  --ram 20480
+
+<span class="cm"># Set volume quota</span>
+openstack quota set dev-team \
+  --volumes 10 \
+  --gigabytes 100
+
+<span class="cm"># Verify everything</span>
+openstack quota show dev-team</code></pre>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 2.2 — Exam Style</div>
+        <div class="card-q">Show the current quota usage for project <strong>dev-team</strong> — both limits and current consumption.</div>
+        <pre><code><span class="cm"># Show quota with usage data</span>
+openstack quota show --usage dev-team
+
+<span class="cm"># Show just compute usage</span>
+openstack limits show --absolute</code></pre>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 2.3 — Docs Speed Drill</div>
+        <div class="card-q">Open docs.openstack.org. Find the CLI reference for <span class="ic">openstack role add</span>. Time yourself — target: under 45 seconds. Then find the <span class="ic">openstack quota set</span> options.</div>
+        <div class="card-desc">Bookmark path: docs.openstack.org → python-openstackclient → CLI Reference → openstack role</div>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 2.4 — Exam Style</div>
+        <div class="card-q">Disable project <strong>dev-team</strong> so users can no longer log in. Then re-enable it.</div>
+        <pre><code><span class="cm"># Disable project</span>
+openstack project set dev-team --disable
+
+<span class="cm"># Verify</span>
+openstack project show dev-team -c enabled
+
+<span class="cm"># Re-enable</span>
+openstack project set dev-team --enable</code></pre>
+      </div>
+
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 2 Goal:</strong> Quota commands from memory. Find any Keystone CLI ref in under 60 seconds.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div id="day3" class="day-card d-w1">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">3</div>
+      <div class="day-tw"><div class="day-title">Glance — Image Management</div>
+      <div class="day-sub"><span class="tag t-img">Images 5%</span> · 2 hrs · Do early on exam day</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="card w1">
+        <div class="card-lbl w1">Task 3.1 — Exam Style</div>
+        <div class="card-q">Upload file <strong>ubuntu-22.04.qcow2</strong> as image <strong>ubuntu-jammy</strong>. Set format qcow2, make it <strong>public</strong>, add property <strong>os_type=linux</strong> and tag <strong>production</strong>.</div>
+        <pre><code>openstack image create ubuntu-jammy \
+  --disk-format qcow2 \
+  --container-format bare \
+  --file ubuntu-22.04.qcow2 \
+  --public \
+  --property os_type=linux \
+  --tag production
+
+<span class="cm"># Verify</span>
+openstack image show ubuntu-jammy -c visibility -c status -c properties</code></pre>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 3.2 — Exam Style</div>
+        <div class="card-q">Change image <strong>ubuntu-jammy</strong> visibility to <strong>private</strong>. Then deactivate it. Then reactivate it.</div>
+        <pre><code><span class="cm"># Change visibility</span>
+openstack image set ubuntu-jammy --private
+
+<span class="cm"># Deactivate</span>
+openstack image deactivate ubuntu-jammy
+
+<span class="cm"># Verify status = deactivated</span>
+openstack image show ubuntu-jammy -c status -c visibility
+
+<span class="cm"># Reactivate</span>
+openstack image reactivate ubuntu-jammy
+
+<span class="cm"># Make public again for use in compute tasks</span>
+openstack image set ubuntu-jammy --public</code></pre>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 3.3 — Exam Style</div>
+        <div class="card-q">Share image <strong>ubuntu-jammy</strong> with project <strong>dev-team</strong>. Then accept the image from the dev-team project context.</div>
+        <pre><code><span class="cm"># Get project ID</span>
+PROJECT_ID=$(openstack project show dev-team -f value -c id)
+
+<span class="cm"># Share image</span>
+openstack image add project ubuntu-jammy $PROJECT_ID
+openstack image set ubuntu-jammy --shared
+
+<span class="cm"># To accept (switch to dev-team context first)</span>
+openstack --os-project-name dev-team image set ubuntu-jammy --accept
+
+<span class="cm"># Verify shared members</span>
+openstack image member list ubuntu-jammy</code></pre>
+      </div>
+
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 3 Goal:</strong> Full image lifecycle in under 10 minutes. Images are 5% of marks — fast points.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 4 -->
+  <div id="day4" class="day-card d-w1">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">4</div>
+      <div class="day-tw"><div class="day-title">Nova Part 1 — Launch, Flavors, Keypairs, Console</div>
+      <div class="day-sub"><span class="tag t-cmp">Compute 35%</span> · 3 hrs · Biggest mark pool</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="card w1">
+        <div class="card-lbl w1">Task 4.1 — Exam Style</div>
+        <div class="card-q">Create flavor <strong>app.small</strong> with ID <strong>101</strong>: 2 vCPUs, 2048 MB RAM, 20 GB disk. Create flavor <strong>app.micro</strong> with 1 vCPU, 512 MB RAM, 10 GB disk.</div>
+        <pre><code>openstack flavor create app.small \
+  --id 101 --vcpus 2 --ram 2048 --disk 20
+
+openstack flavor create app.micro \
+  --vcpus 1 --ram 512 --disk 10
+
+<span class="cm"># Verify</span>
+openstack flavor list</code></pre>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 4.2 — Exam Style</div>
+        <div class="card-q">Create keypair <strong>exam-key</strong>. Then import an existing public key from <strong>~/.ssh/id_rsa.pub</strong> as keypair <strong>imported-key</strong>.</div>
+        <pre><code><span class="cm"># Generate new keypair (saves private key)</span>
+openstack keypair create exam-key > ~/exam-key.pem
+chmod 600 ~/exam-key.pem
+
+<span class="cm"># Import existing public key</span>
+openstack keypair create imported-key \
+  --public-key ~/.ssh/id_rsa.pub
+
+<span class="cm"># List keypairs</span>
+openstack keypair list</code></pre>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 4.3 — Exam Style</div>
+        <div class="card-q">Create security group <strong>web-sg</strong>. Add rules: allow SSH (22) from anywhere, HTTP (80) from anywhere, HTTPS (443) from anywhere, ICMP from anywhere. Launch instance <strong>web-01</strong> using ubuntu-jammy, app.small flavor, private network, exam-key keypair, and web-sg security group.</div>
+        <pre><code><span class="cm"># Security group</span>
+openstack security group create web-sg --description "Web servers"
+
+openstack security group rule create web-sg --protocol tcp --dst-port 22 --remote-ip 0.0.0.0/0
+openstack security group rule create web-sg --protocol tcp --dst-port 80 --remote-ip 0.0.0.0/0
+openstack security group rule create web-sg --protocol tcp --dst-port 443 --remote-ip 0.0.0.0/0
+openstack security group rule create web-sg --protocol icmp --remote-ip 0.0.0.0/0
+
+<span class="cm"># Launch instance</span>
+openstack server create web-01 \
+  --image ubuntu-jammy \
+  --flavor app.small \
+  --network private \
+  --key-name exam-key \
+  --security-group web-sg \
+  --wait
+
+<span class="cm"># Verify ACTIVE</span>
+openstack server show web-01 -c status -c addresses -c security_groups</code></pre>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 4.4 — Exam Style</div>
+        <div class="card-q">Get the VNC console URL for <strong>web-01</strong>. Show the last 30 lines of its console log. Show its current power state.</div>
+        <pre><code>openstack console url show web-01 --novnc
+openstack console log show web-01 --lines 30
+openstack server show web-01 -c power_state -c status -c vm_state</code></pre>
+      </div>
+
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 4 Goal:</strong> Launch 5 instances with different configs. Under 3 minutes each. No notes.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 5 -->
+  <div id="day5" class="day-card d-w1">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">5</div>
+      <div class="day-tw"><div class="day-title">Nova Part 2 — Snapshots, Resize, Rebuild, Lifecycle</div>
+      <div class="day-sub"><span class="tag t-cmp">Compute 35%</span> · 3 hrs</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="card w1">
+        <div class="card-lbl w1">Task 5.1 — Exam Style</div>
+        <div class="card-q">Snapshot running instance <strong>web-01</strong> as <strong>web-01-snap</strong>. Launch new instance <strong>web-02</strong> from that snapshot. Verify both are ACTIVE.</div>
+        <pre><code><span class="cm"># Take snapshot (instance stays running)</span>
+openstack server image create web-01 --name web-01-snap --wait
+
+<span class="cm"># Verify snapshot is ACTIVE</span>
+openstack image show web-01-snap -c status
+
+<span class="cm"># Launch from snapshot</span>
+openstack server create web-02 \
+  --image web-01-snap \
+  --flavor app.small \
+  --network private \
+  --wait
+
+openstack server list -c Name -c Status</code></pre>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 5.2 — Exam Style</div>
+        <div class="card-q">Resize <strong>web-01</strong> to flavor <strong>app.micro</strong>. Confirm the resize. Verify the new flavor is applied.</div>
+        <div class="alert warn"><div class="alert-icon">⚠️</div><div class="alert-body"><strong>Must Confirm!</strong>After resize, instance is in VERIFY_RESIZE state. It stays there forever unless you run confirm or revert. This trips many candidates.</div></div>
+        <pre><code>openstack server resize web-01 --flavor app.micro --wait
+
+<span class="cm"># Status = VERIFY_RESIZE — must confirm</span>
+openstack server show web-01 -c status
+
+<span class="cm"># Confirm the resize</span>
+openstack server resize confirm web-01
+
+<span class="cm"># Verify new flavor</span>
+openstack server show web-01 -c flavor</code></pre>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 5.3 — Exam Style</div>
+        <div class="card-q">Rebuild <strong>web-01</strong> using image <strong>ubuntu-jammy</strong>. Set admin password to <strong>RebuildPass456</strong>. Verify it returns to ACTIVE.</div>
+        <pre><code>openstack server rebuild web-01 \
+  --image ubuntu-jammy \
+  --admin-password RebuildPass456 \
+  --wait
+
+openstack server show web-01 -c status -c image</code></pre>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 5.4 — Exam Style</div>
+        <div class="card-q">Demonstrate all power state operations on <strong>web-01</strong>: stop, start, soft-reboot, hard-reboot, suspend, resume, pause, unpause.</div>
+        <pre><code>openstack server stop web-01
+openstack server show web-01 -c status          <span class="cm"># SHUTOFF</span>
+openstack server start web-01
+openstack server reboot web-01                  <span class="cm"># soft reboot</span>
+openstack server reboot web-01 --hard           <span class="cm"># hard reboot</span>
+openstack server suspend web-01
+openstack server resume web-01
+openstack server pause web-01
+openstack server unpause web-01</code></pre>
+      </div>
+
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 5 Goal:</strong> Snap → launch → resize → confirm → rebuild → power states. All from memory.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 6 -->
+  <div id="day6" class="day-card d-w1">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">6</div>
+      <div class="day-tw"><div class="day-title">Nova Part 3 — Server Groups, Host Aggregates, User Data</div>
+      <div class="day-sub"><span class="tag t-cmp">Compute 35%</span> · Extra depth · 2 hrs</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="card w1">
+        <div class="card-lbl w1">Task 6.1 — Exam Style</div>
+        <div class="card-q">Create server group <strong>web-antiaffinity</strong> with <strong>anti-affinity</strong> policy. Launch two instances in this group so they land on different hypervisors.</div>
+        <pre><code>openstack server group create web-antiaffinity --policy anti-affinity
+
+GROUP_ID=$(openstack server group show web-antiaffinity -f value -c id)
+
+openstack server create web-aa-1 \
+  --image ubuntu-jammy --flavor app.small \
+  --network private --hint group=$GROUP_ID --wait
+
+openstack server create web-aa-2 \
+  --image ubuntu-jammy --flavor app.small \
+  --network private --hint group=$GROUP_ID --wait
+
+<span class="cm"># Verify they are on different hosts</span>
+openstack server show web-aa-1 -c "OS-EXT-SRV-ATTR:host"
+openstack server show web-aa-2 -c "OS-EXT-SRV-ATTR:host"</code></pre>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 6.2 — Exam Style</div>
+        <div class="card-q">Create host aggregate <strong>ssd-hosts</strong> with metadata <strong>storage=ssd</strong>. Create availability zone <strong>az-ssd</strong> from it. Launch instance <strong>ssd-vm</strong> in that availability zone.</div>
+        <pre><code>openstack aggregate create ssd-hosts
+openstack aggregate set --property storage=ssd ssd-hosts
+openstack aggregate set --zone az-ssd ssd-hosts
+
+openstack server create ssd-vm \
+  --image ubuntu-jammy --flavor app.small \
+  --network private \
+  --availability-zone az-ssd \
+  --wait</code></pre>
+      </div>
+
+      <div class="card w1">
+        <div class="card-lbl w1">Task 6.3 — Exam Style</div>
+        <div class="card-q">Launch instance <strong>userdata-vm</strong> that automatically installs nginx on first boot using cloud-init user data.</div>
+        <pre><code>cat > /tmp/init.sh << 'EOF'
+#!/bin/bash
+apt-get update -y
+apt-get install -y nginx
+systemctl enable nginx
+systemctl start nginx
+EOF
+
+openstack server create userdata-vm \
+  --image ubuntu-jammy \
+  --flavor app.small \
+  --network private \
+  --user-data /tmp/init.sh \
+  --wait
+
+<span class="cm"># Check console log to verify cloud-init ran</span>
+openstack console log show userdata-vm --lines 50</code></pre>
+      </div>
+
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 6 Goal:</strong> Server groups, availability zones, and user-data from memory.</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 7 -->
+  <div id="day7" class="day-card d-w1">
+    <div class="day-hdr" onclick="toggle(this)">
+      <div class="day-num">7</div>
+      <div class="day-tw"><div class="day-title">Week 1 Timed Review — 45 Minutes, No Notes</div>
+      <div class="day-sub">All Week 1 domains · Timer on · Clean environment</div></div>
+      <div class="day-chev">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="alert warn"><div class="alert-icon">⏱️</div><div class="alert-body"><strong>Set a 45-minute timer NOW. No notes. docs.openstack.org only if absolutely necessary.</strong></div></div>
+      <ul class="checklist">
+        <li>Create project <strong>review-proj</strong> and user <strong>review-user</strong> with password. Assign member role.</li>
+        <li>Set quota on review-proj: 3 instances, 6 vCPUs, 8192 MB RAM, 5 volumes.</li>
+        <li>Upload any local image file as <strong>review-img</strong> (qcow2, public). Add property env=test.</li>
+        <li>Create flavor <strong>review.tiny</strong>: 1 vCPU, 256 MB RAM, 5 GB disk.</li>
+        <li>Create security group <strong>review-sg</strong> with SSH and ICMP rules.</li>
+        <li>Launch instance <strong>review-vm</strong> using review-img, review.tiny, web-sg (or review-sg).</li>
+        <li>Snapshot review-vm as <strong>review-snap</strong>.</li>
+        <li>Resize review-vm to app.micro. Confirm resize.</li>
+        <li>Rebuild review-vm from review-img.</li>
+        <li>Get VNC console URL. Show last 20 lines of console log.</li>
+        <li>Stop, start, soft-reboot review-vm.</li>
+        <li>Clean teardown: delete vm, snap, img, flavor, sg, project, user.</li>
+      </ul>
+      <div class="goal"><div style="font-size:1rem">🎯</div><div><strong>Day 7 Goal:</strong> All 12 tasks in under 45 minutes. Anything over 3 minutes per task needs a second drill on Sunday.</div></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <a href="COA_01_Foundation.html" class="nav-btn">← File 01 Foundation</a>
+    <a href="COA_03_Week2_NetworkStorage.html" class="nav-btn next">File 03 — Week 2 Network & Storage →</a>
+  </div>
+</main>
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+function toggle(h){const c=h.parentElement;c.classList.toggle('open');}
+window.addEventListener('scroll',()=>{const s=window.scrollY,h=document.body.scrollHeight-window.innerHeight;const tb=document.getElementById('topbar');if(tb)tb.style.width=(s/h*100)+'%';const st=document.getElementById('scrollTop');if(st)st.classList.toggle('show',s>300);document.querySelectorAll('.sb-link').forEach(a=>{const id=a.getAttribute('href');if(!id||!id.startsWith('#'))return;const el=document.getElementById(id.slice(1));if(el)a.classList.toggle('active',s>=el.offsetTop-130);});});
+</script>
+</body></html>
