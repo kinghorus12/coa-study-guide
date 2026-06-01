@@ -1,0 +1,284 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>COA Master Guide — Horus Sielatshom</title>
+<style>:root {
+  --bg:#0b0d14;--surface:#13161f;--surface2:#1a1d2e;--surface3:#1f2235;
+  --border:#252840;--border2:#2f3354;
+  --accent:#6ee7f7;--accent2:#a78bfa;--accent3:#34d399;
+  --orange:#fb923c;--red:#f87171;--yellow:#fbbf24;--pink:#f472b6;--blue:#60a5fa;
+  --text:#e2e8f0;--muted:#64748b;--code-bg:#090b10;
+  --w1:#38bdf8;--w2:#fbbf24;--w3:#34d399;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;line-height:1.65;}
+#topbar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;z-index:999;transition:width .1s;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;z-index:100;}
+.sb-logo{padding:1.2rem 1.2rem .9rem;border-bottom:1px solid var(--border);}
+.sb-logo-tag{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
+.sb-logo h2{font-size:.95rem;font-weight:800;}
+.sb-logo p{font-size:.68rem;color:var(--muted);margin-top:.15rem;}
+.sb-file-nav{padding:.6rem 1.2rem;display:flex;flex-direction:column;gap:.2rem;border-bottom:1px solid var(--border);}
+.sb-file-link{display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;border-radius:6px;font-size:.72rem;color:var(--muted);text-decoration:none;transition:all .18s;}
+.sb-file-link:hover{background:rgba(255,255,255,.04);color:var(--text);}
+.sb-file-link.current{background:rgba(110,231,247,.08);color:var(--accent);font-weight:600;}
+.sb-file-link .fnum{width:20px;height:20px;border-radius:4px;background:rgba(110,231,247,.1);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;flex-shrink:0;}
+.sb-section-label{padding:.7rem 1.2rem .2rem;font-size:.57rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);}
+.sb-link{display:flex;align-items:center;gap:.6rem;padding:.42rem 1.2rem;font-size:.76rem;color:#94a3b8;text-decoration:none;transition:all .18s;border-left:2px solid transparent;}
+.sb-link:hover,.sb-link.active{color:var(--text);background:rgba(110,231,247,.05);border-left-color:var(--accent);}
+.sb-dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .18s;}
+.sb-link:hover .sb-dot,.sb-link.active .sb-dot{background:var(--accent);}
+.main{margin-left:260px;padding:2.5rem 3.5rem;max-width:1000px;}
+.hero{position:relative;overflow:hidden;border-radius:14px;padding:2.5rem;margin-bottom:2.5rem;background:var(--surface2);border:1px solid var(--border2);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(110,231,247,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(110,231,247,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.hero-glow{position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(167,139,250,.18) 0%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:.7rem;display:flex;align-items:center;gap:.6rem;}
+.hero-eyebrow::before{content:'';display:block;width:22px;height:1px;background:var(--accent);}
+.hero h1{font-size:2rem;font-weight:900;line-height:1.1;margin-bottom:.7rem;}
+.hero h1 em{font-style:normal;color:var(--accent);}
+.hero p{color:#94a3b8;font-size:.88rem;max-width:580px;line-height:1.7;}
+.sec-hdr{display:flex;align-items:flex-start;gap:1rem;margin:3rem 0 1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+.sec-num{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;flex-shrink:0;}
+.sn-cyan{background:rgba(110,231,247,.12);color:var(--accent);border:1px solid rgba(110,231,247,.2);}
+.sn-purple{background:rgba(167,139,250,.12);color:var(--accent2);border:1px solid rgba(167,139,250,.2);}
+.sn-green{background:rgba(52,211,153,.12);color:var(--accent3);border:1px solid rgba(52,211,153,.2);}
+.sn-orange{background:rgba(251,146,60,.12);color:var(--orange);border:1px solid rgba(251,146,60,.2);}
+.sn-yellow{background:rgba(251,191,36,.12);color:var(--yellow);border:1px solid rgba(251,191,36,.2);}
+.sn-pink{background:rgba(244,114,182,.12);color:var(--pink);border:1px solid rgba(244,114,182,.2);}
+.sn-blue{background:rgba(96,165,250,.12);color:var(--blue);border:1px solid rgba(96,165,250,.2);}
+.sec-ey{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.25rem;}
+.sec-title{font-size:1.4rem;font-weight:800;line-height:1.2;}
+.sec-desc{font-size:.81rem;color:var(--muted);margin-top:.25rem;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.4rem;margin-bottom:1.1rem;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
+.card.cyan::before{background:var(--accent);}
+.card.purple::before{background:var(--accent2);}
+.card.green::before{background:var(--accent3);}
+.card.orange::before{background:var(--orange);}
+.card.yellow::before{background:var(--yellow);}
+.card.pink::before{background:var(--pink);}
+.card.blue::before{background:var(--blue);}
+.card.w1::before{background:var(--w1);}
+.card.w2::before{background:var(--w2);}
+.card.w3::before{background:var(--w3);}
+.card-lbl{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:.55rem;}
+.card-lbl.cyan{color:var(--accent)}.card-lbl.purple{color:var(--accent2)}.card-lbl.green{color:var(--accent3)}
+.card-lbl.orange{color:var(--orange)}.card-lbl.yellow{color:var(--yellow)}.card-lbl.pink{color:var(--pink)}
+.card-lbl.blue{color:var(--blue)}.card-lbl.w1{color:var(--w1)}.card-lbl.w2{color:var(--w2)}.card-lbl.w3{color:var(--w3)}
+.card-q{font-weight:700;font-size:.95rem;margin-bottom:.5rem;line-height:1.5;}
+.card-desc{font-size:.81rem;color:#94a3b8;line-height:1.7;margin-bottom:.8rem;}
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;overflow-x:auto;font-size:.76rem;line-height:1.65;margin:.6rem 0;}
+code{font-family:'Cascadia Code','Fira Code','Courier New',monospace;}
+.cm{color:#6272a4;font-style:italic;}.kw{color:#ff79c6;}.fn{color:#50fa7b;}.str{color:#f1fa8c;}.num{color:#bd93f9;}.key{color:#8be9fd;}.val{color:#ffb86c;}.ok{color:#50fa7b;font-weight:bold;}.er{color:#ff5555;font-weight:bold;}
+.alert{border-radius:8px;padding:.9rem 1.1rem;margin:.7rem 0;font-size:.81rem;line-height:1.65;display:flex;gap:.8rem;}
+.alert-icon{font-size:1rem;flex-shrink:0;margin-top:.05rem;}
+.alert-body strong{display:block;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.25rem;}
+.alert.info{background:rgba(110,231,247,.06);border:1px solid rgba(110,231,247,.18);}
+.alert.info strong{color:var(--accent);}
+.alert.warn{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);}
+.alert.warn strong{color:var(--yellow);}
+.alert.danger{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.2);}
+.alert.danger strong{color:var(--red);}
+.alert.success{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);}
+.alert.success strong{color:var(--accent3);}
+.steps{list-style:none;counter-reset:step;margin:.4rem 0;}
+.steps li{counter-increment:step;display:flex;gap:.8rem;margin-bottom:.8rem;font-size:.83rem;line-height:1.6;align-items:flex-start;}
+.steps li::before{content:counter(step);min-width:24px;height:24px;background:var(--surface3);color:var(--accent);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.68rem;flex-shrink:0;margin-top:.1rem;}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
+.checklist li{display:flex;align-items:flex-start;gap:.7rem;font-size:.83rem;color:#94a3b8;line-height:1.5;}
+.checklist li::before{content:'☐';color:var(--muted);flex-shrink:0;font-size:.95rem;line-height:1.3;}
+.tbl{width:100%;border-collapse:collapse;margin:.7rem 0;font-size:.8rem;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.tbl th{background:var(--surface2);padding:.6rem .85rem;text-align:left;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);}
+.tbl td{padding:.6rem .85rem;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:rgba(255,255,255,.015);}
+.ic{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:.1em .35em;font-family:monospace;font-size:.8em;}
+.goal{display:flex;align-items:flex-start;gap:.7rem;background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.2);border-radius:6px;padding:.85rem 1rem;margin-top:1rem;font-size:.81rem;}
+.goal strong{color:var(--accent3);}
+.day-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:1.2rem;overflow:hidden;}
+.day-hdr{display:flex;align-items:center;gap:.9rem;padding:1rem 1.3rem;border-bottom:1px solid transparent;cursor:pointer;user-select:none;transition:background .18s;}
+.day-hdr:hover{background:rgba(255,255,255,.025);}
+.day-card.open .day-hdr{border-bottom-color:var(--border);}
+.day-num{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex-shrink:0;}
+.d-w1 .day-num{background:rgba(56,189,248,.15);color:var(--w1);}
+.d-w2 .day-num{background:rgba(251,191,36,.15);color:var(--w2);}
+.d-w3 .day-num{background:rgba(52,211,153,.15);color:var(--w3);}
+.day-tw{flex:1;}
+.day-title{font-weight:700;font-size:.95rem;}
+.day-sub{font-size:.72rem;color:var(--muted);margin-top:.1rem;}
+.day-chev{color:var(--muted);transition:transform .28s;font-size:1.1rem;}
+.day-card.open .day-chev{transform:rotate(180deg);}
+.day-body{display:none;padding:1.4rem;}
+.day-card.open .day-body{display:block;}
+.week-hdr{display:flex;align-items:center;gap:.9rem;margin:2.5rem 0 1.2rem;padding-bottom:.9rem;border-bottom:1px solid var(--border);}
+.week-badge{padding:.35rem .9rem;border-radius:6px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.wb1{background:rgba(56,189,248,.15);color:var(--w1);border:1px solid rgba(56,189,248,.3);}
+.wb2{background:rgba(251,191,36,.15);color:var(--w2);border:1px solid rgba(251,191,36,.3);}
+.wb3{background:rgba(52,211,153,.15);color:var(--w3);border:1px solid rgba(52,211,153,.3);}
+.week-title{font-size:1.2rem;font-weight:800;}
+.tag{display:inline-block;padding:.15rem .5rem;border-radius:4px;font-size:.65rem;font-weight:700;}
+.t-id{background:rgba(167,139,250,.15);color:#a78bfa;}
+.t-img{background:rgba(244,114,182,.15);color:#f472b6;}
+.t-cmp{background:rgba(56,189,248,.15);color:#38bdf8;}
+.t-net{background:rgba(251,191,36,.15);color:#fbbf24;}
+.t-blk{background:rgba(52,211,153,.15);color:#34d399;}
+.t-obj{background:rgba(251,146,60,.15);color:#fb923c;}
+.t-ht{background:rgba(248,113,113,.15);color:#f87171;}
+.nav-btns{display:flex;gap:1rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);}
+.nav-btn{display:flex;align-items:center;gap:.6rem;padding:.7rem 1.2rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);font-size:.78rem;transition:all .2s;flex:1;}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent);}
+.nav-btn.next{justify-content:flex-end;}
+#scrollTop{position:fixed;bottom:1.5rem;right:1.5rem;width:40px;height:40px;background:var(--surface2);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .3s;z-index:200;color:var(--accent);font-size:.95rem;}
+#scrollTop.show{opacity:1;}
+@media(max-width:900px){.sidebar{display:none;}.main{margin-left:0;padding:1.5rem;}}
+.file-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);border-radius:10px;overflow:hidden;margin:1.5rem 0;}
+.file-card{background:var(--surface);padding:1.5rem;text-decoration:none;color:var(--text);transition:background .2s;display:flex;flex-direction:column;gap:.7rem;}
+.file-card:hover{background:var(--surface2);}
+.fc-num{font-family:monospace;font-size:.65rem;letter-spacing:.18em;color:var(--muted);}
+.fc-title{font-size:1rem;font-weight:800;line-height:1.3;}
+.fc-desc{font-size:.75rem;color:#94a3b8;line-height:1.6;}
+.fc-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.3rem;}
+.fc-arrow{margin-top:auto;font-size:.75rem;color:var(--accent);font-weight:600;}
+.progress-section{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:1.5rem;}
+.prog-title{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;}
+.prog-row{display:flex;align-items:center;gap:.9rem;margin-bottom:.7rem;}
+.prog-label{width:160px;font-size:.78rem;flex-shrink:0;}
+.prog-bar{flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:4px;}
+.prog-pct{width:38px;text-align:right;font-weight:700;font-size:.78rem;}
+.domain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:1rem 0;}
+.domain-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;text-align:center;}
+.domain-pct{font-size:1.6rem;font-weight:900;line-height:1;}
+.domain-name{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.3rem;}
+.timeline{display:flex;flex-direction:column;gap:0;}
+.tl-item{display:flex;gap:1.2rem;padding:.8rem 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.tl-day{width:50px;font-size:.7rem;color:var(--muted);flex-shrink:0;padding-top:.15rem;}
+.tl-dot-col{display:flex;flex-direction:column;align-items:center;gap:0;width:16px;flex-shrink:0;}
+.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:.25rem;}
+.tl-line{flex:1;width:1px;background:var(--border);}
+.tl-content{flex:1;padding-bottom:.5rem;}
+.tl-title{font-size:.83rem;font-weight:600;margin-bottom:.2rem;}
+.tl-tags{display:flex;gap:.3rem;flex-wrap:wrap;}
+</style></head><body>
+<div id="topbar"></div>
+<nav class="sidebar">
+  <div class="sb-logo"><div class="sb-logo-tag">COA Complete Guide</div><h2>Master Index</h2><p>Horus Sielatshom — 21-Day Plan</p></div>
+  <div class="sb-file-nav">
+    <a href="COA_00_Master_Index.html" class="sb-file-link current"><span class="fnum">00</span>Master Index</a>
+    <a href="COA_01_Foundation.html" class="sb-file-link"><span class="fnum">01</span>Foundation & Exam Intel</a>
+    <a href="COA_02_Week1_CoreServices.html" class="sb-file-link"><span class="fnum">02</span>Week 1 — Core Services</a>
+    <a href="COA_03_Week2_NetworkStorage.html" class="sb-file-link"><span class="fnum">03</span>Week 2 — Network & Storage</a>
+    <a href="COA_04_Week3_MockExams.html" class="sb-file-link"><span class="fnum">04</span>Week 3 — Speed & Mocks</a>
+    <a href="COA_05_UbuntuProject.html" class="sb-file-link"><span class="fnum">05</span>Ubuntu Server Project</a>
+  </div>
+  <div class="sb-section-label">Quick Links</div>
+  <a href="#overview" class="sb-link"><span class="sb-dot"></span>Overview</a>
+  <a href="#files" class="sb-link"><span class="sb-dot"></span>All Files</a>
+  <a href="#weights" class="sb-link"><span class="sb-dot"></span>Domain Weights</a>
+  <a href="#timeline" class="sb-link"><span class="sb-dot"></span>21-Day Timeline</a>
+</nav>
+<main class="main">
+  <div class="hero">
+    <div class="hero-grid"></div><div class="hero-glow"></div>
+    <div class="hero-eyebrow">Certified OpenStack Administrator</div>
+    <h1>COA Complete <em>Study Guide</em></h1>
+    <p>Everything you need to pass the COA exam in 21 days — from environment setup to full mock exams and a complete Ubuntu Server project covering every exam domain.</p>
+    <div style="display:flex;gap:1.5rem;margin-top:1.5rem;flex-wrap:wrap;">
+      <div style="text-align:center;"><div style="font-size:2rem;font-weight:900;color:var(--accent);">6</div><div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);">Guide Files</div></div>
+      <div style="text-align:center;"><div style="font-size:2rem;font-weight:900;color:var(--accent2);">21</div><div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);">Study Days</div></div>
+      <div style="text-align:center;"><div style="font-size:2rem;font-weight:900;color:var(--accent3);">80+</div><div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);">Exam Tasks</div></div>
+      <div style="text-align:center;"><div style="font-size:2rem;font-weight:900;color:var(--orange);">6</div><div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);">Domains</div></div>
+      <div style="text-align:center;"><div style="font-size:2rem;font-weight:900;color:var(--yellow);">3h</div><div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);">Real Exam</div></div>
+    </div>
+  </div>
+
+  <div id="overview">
+    <div class="sec-hdr"><div class="sec-num sn-cyan">📖</div><div class="sec-tw"><div class="sec-ey" style="color:var(--accent);">How to use this guide</div><div class="sec-title">Reading Order</div><div class="sec-desc">Follow files 01 → 05 in order. Each builds on the last.</div></div></div>
+    <div class="alert info"><div class="alert-icon">💡</div><div class="alert-body"><strong>Start Here Every Day</strong>Open this index first. It keeps your context. Then open the file for your current week. Keep your MicroStack terminal open alongside the guide at all times — every task must be done, not just read.</div></div>
+  </div>
+
+  <div id="files">
+    <div class="sec-hdr"><div class="sec-num sn-purple">📁</div><div class="sec-tw"><div class="sec-ey" style="color:var(--accent2);">Navigation</div><div class="sec-title">All 6 Guide Files</div></div></div>
+    <div class="file-grid">
+      <a href="COA_01_Foundation.html" class="file-card">
+        <div class="fc-num">FILE 01</div>
+        <div class="fc-title">Foundation & Exam Intel</div>
+        <div class="fc-desc">Exam format, domain weights, real candidate reports, keyboard setup, bookmarks, proctor rules, environment verification. Read this before Day 1.</div>
+        <div class="fc-tags"><span class="tag t-id">Exam Format</span><span class="tag t-cmp">Domain Weights</span><span class="tag t-net">Intel</span></div>
+        <div class="fc-arrow">Open →</div>
+      </a>
+      <a href="COA_02_Week1_CoreServices.html" class="file-card">
+        <div class="fc-num">FILE 02 — DAYS 1–7</div>
+        <div class="fc-title">Week 1: Core Services</div>
+        <div class="fc-desc">Keystone identity, Glance images, Nova compute. Full exam-format tasks with CLI solutions. Days 1–7 timed drills and Day 7 review.</div>
+        <div class="fc-tags"><span class="tag t-id">Identity</span><span class="tag t-img">Images</span><span class="tag t-cmp">Compute</span></div>
+        <div class="fc-arrow">Open →</div>
+      </a>
+      <a href="COA_03_Week2_NetworkStorage.html" class="file-card">
+        <div class="fc-num">FILE 03 — DAYS 8–14</div>
+        <div class="fc-title">Week 2: Network & Storage</div>
+        <div class="fc-desc">Neutron networking (the hardest domain), Cinder block storage, Swift object storage, Heat orchestration with full YAML templates.</div>
+        <div class="fc-tags"><span class="tag t-net">Networking</span><span class="tag t-blk">Storage</span><span class="tag t-ht">Heat</span></div>
+        <div class="fc-arrow">Open →</div>
+      </a>
+      <a href="COA_04_Week3_MockExams.html" class="file-card">
+        <div class="fc-num">FILE 04 — DAYS 15–21</div>
+        <div class="fc-title">Week 3: Speed & Mock Exams</div>
+        <div class="fc-desc">Horizon dashboard, CLI speed tricks, screen command, troubleshooting, two full 3-hour mock exams, exam day checklist and protocol.</div>
+        <div class="fc-tags"><span class="tag t-cmp">Horizon</span><span class="tag t-net">Mocks</span><span class="tag t-blk">Speed</span></div>
+        <div class="fc-arrow">Open →</div>
+      </a>
+      <a href="COA_05_UbuntuProject.html" class="file-card" style="grid-column:span 2;background:linear-gradient(135deg,var(--surface),rgba(110,231,247,.07));border-color:rgba(110,231,247,.2);">
+        <div class="fc-num">FILE 05 — CAPSTONE PROJECT</div>
+        <div class="fc-title">Ubuntu Server Project — Full Cloud Build from Scratch</div>
+        <div class="fc-desc">A complete hands-on project on a real Ubuntu server that covers every COA exam domain. Install MicroStack, build a multi-tier cloud application environment — identity, networking, compute, storage, orchestration. Designed to make your GitHub shine and your exam skills unbeatable.</div>
+        <div class="fc-tags"><span class="tag t-id">Identity</span><span class="tag t-img">Images</span><span class="tag t-cmp">Compute</span><span class="tag t-net">Networking</span><span class="tag t-blk">Block Storage</span><span class="tag t-obj">Object Storage</span><span class="tag t-ht">Heat</span></div>
+        <div class="fc-arrow">Open →</div>
+      </a>
+    </div>
+  </div>
+
+  <div id="weights">
+    <div class="sec-hdr"><div class="sec-num sn-orange">📊</div><div class="sec-tw"><div class="sec-ey" style="color:var(--orange);">Know where marks live</div><div class="sec-title">Official Domain Weights</div></div></div>
+    <div class="domain-grid">
+      <div class="domain-card"><div class="domain-pct" style="color:#38bdf8">35%</div><div class="domain-name">Compute</div></div>
+      <div class="domain-card"><div class="domain-pct" style="color:#fbbf24">30%</div><div class="domain-name">Networking</div></div>
+      <div class="domain-card"><div class="domain-pct" style="color:#a78bfa">15%</div><div class="domain-name">Identity</div></div>
+      <div class="domain-card"><div class="domain-pct" style="color:#34d399">10%</div><div class="domain-name">Block Storage</div></div>
+      <div class="domain-card"><div class="domain-pct" style="color:#f472b6">5%</div><div class="domain-name">Images</div></div>
+      <div class="domain-card"><div class="domain-pct" style="color:#fb923c">5%</div><div class="domain-name">Object Storage</div></div>
+    </div>
+    <div class="alert warn"><div class="alert-icon">⚡</div><div class="alert-body"><strong>Compute + Networking = 65% of your score.</strong> Nail these two domains and you pass even with average performance everywhere else. Never sacrifice Compute or Networking study time for Swift (5%).</div></div>
+  </div>
+
+  <div id="timeline">
+    <div class="sec-hdr"><div class="sec-num sn-green">📅</div><div class="sec-tw"><div class="sec-ey" style="color:var(--accent3);">Your roadmap</div><div class="sec-title">21-Day Timeline</div></div></div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-day">Pre</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--accent)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Read File 01 — Foundation & Exam Intel</div><div class="tl-tags"><span class="tag t-id">Setup</span><span class="tag t-cmp">Bookmarks</span><span class="tag t-net">Keyboard</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 1</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w1)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Environment setup + Keystone basics</div><div class="tl-tags"><span class="tag t-id">Identity</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 2</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w1)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Keystone deep dive + quotas + docs navigation</div><div class="tl-tags"><span class="tag t-id">Identity</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 3</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w1)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Glance image management</div><div class="tl-tags"><span class="tag t-img">Images</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 4</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w1)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Nova Part 1 — Launch, flavors, keypairs, console</div><div class="tl-tags"><span class="tag t-cmp">Compute</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 5</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w1)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Nova Part 2 — Snapshots, resize, rebuild, lifecycle</div><div class="tl-tags"><span class="tag t-cmp">Compute</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 6</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w1)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Nova Part 3 — Security groups, server groups, user data</div><div class="tl-tags"><span class="tag t-cmp">Compute</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 7</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w1)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Week 1 timed review — 45 min drill, all core services</div><div class="tl-tags"><span class="tag t-id">Identity</span><span class="tag t-img">Images</span><span class="tag t-cmp">Compute</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 8</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w2)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Neutron Part 1 — Networks, subnets, provider networks</div><div class="tl-tags"><span class="tag t-net">Networking</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 9</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w2)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Neutron Part 2 — Routers, floating IPs, end-to-end flow</div><div class="tl-tags"><span class="tag t-net">Networking</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 10</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w2)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Neutron Part 3 — Ports, troubleshooting, allowed address pairs</div><div class="tl-tags"><span class="tag t-net">Networking</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 11</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w2)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Cinder — Block storage, volumes, snapshots, boot-from-volume</div><div class="tl-tags"><span class="tag t-blk">Block Storage</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 12</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w2)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Swift — Object storage, containers, ACLs, metadata</div><div class="tl-tags"><span class="tag t-obj">Object Storage</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 13</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w2)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Heat — HOT templates, intrinsic functions, full stack examples</div><div class="tl-tags"><span class="tag t-ht">Orchestration</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 14</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w2)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Week 2 timed review — 60 min drill, all network & storage</div><div class="tl-tags"><span class="tag t-net">Networking</span><span class="tag t-blk">Storage</span><span class="tag t-ht">Heat</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 15</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w3)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Troubleshooting + service logs + quota management</div><div class="tl-tags"><span class="tag t-cmp">All Domains</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 16</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w3)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Horizon dashboard + docs speed navigation drills</div><div class="tl-tags"><span class="tag t-cmp">Horizon</span><span class="tag t-net">Docs</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 17</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w3)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">CLI speed tricks + screen command + output formatting</div><div class="tl-tags"><span class="tag t-cmp">Speed</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 18</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w3)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Weak zone drilling — your 3 slowest areas</div><div class="tl-tags"><span class="tag t-id">Targeted</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 19</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w3)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Mock Exam 1 — AcmeCorp scenario, full 3 hours</div><div class="tl-tags"><span class="tag t-ht">Mock</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 20</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--w3)"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">Mock Exam 2 — FinanceApp scenario, push for 90%</div><div class="tl-tags"><span class="tag t-ht">Mock</span></div></div></div>
+      <div class="tl-item"><div class="tl-day">Day 21</div><div class="tl-dot-col"><div class="tl-dot" style="background:var(--accent3)"></div></div><div class="tl-content"><div class="tl-title">Final day — light warmup, exam day setup, sleep early</div><div class="tl-tags"><span class="tag t-id">Final</span></div></div></div>
+    </div>
+  </div>
+  <div class="nav-btns"><a href="COA_01_Foundation.html" class="nav-btn next">Start with File 01 — Foundation →</a></div>
+</main>
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>window.addEventListener('scroll',()=>{const s=window.scrollY,h=document.body.scrollHeight-window.innerHeight;const tb=document.getElementById('topbar');if(tb)tb.style.width=(s/h*100)+'%';const st=document.getElementById('scrollTop');if(st)st.classList.toggle('show',s>300);});</script>
+</body></html>
