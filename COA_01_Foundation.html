@@ -1,0 +1,493 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>COA File 01 — Foundation & Exam Intel</title>
+<style>
+:root {
+  --bg:#0b0d14;--surface:#13161f;--surface2:#1a1d2e;--surface3:#1f2235;
+  --border:#252840;--border2:#2f3354;
+  --accent:#6ee7f7;--accent2:#a78bfa;--accent3:#34d399;
+  --orange:#fb923c;--red:#f87171;--yellow:#fbbf24;--pink:#f472b6;--blue:#60a5fa;
+  --text:#e2e8f0;--muted:#64748b;--code-bg:#090b10;
+  --w1:#38bdf8;--w2:#fbbf24;--w3:#34d399;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;line-height:1.65;}
+#topbar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;z-index:999;transition:width .1s;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;z-index:100;}
+.sb-logo{padding:1.2rem 1.2rem .9rem;border-bottom:1px solid var(--border);}
+.sb-logo-tag{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
+.sb-logo h2{font-size:.95rem;font-weight:800;}
+.sb-logo p{font-size:.68rem;color:var(--muted);margin-top:.15rem;}
+.sb-file-nav{padding:.6rem 1.2rem;display:flex;flex-direction:column;gap:.2rem;border-bottom:1px solid var(--border);}
+.sb-file-link{display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;border-radius:6px;font-size:.72rem;color:var(--muted);text-decoration:none;transition:all .18s;}
+.sb-file-link:hover{background:rgba(255,255,255,.04);color:var(--text);}
+.sb-file-link.current{background:rgba(110,231,247,.08);color:var(--accent);font-weight:600;}
+.sb-file-link .fnum{width:20px;height:20px;border-radius:4px;background:rgba(110,231,247,.1);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;flex-shrink:0;}
+.sb-section-label{padding:.7rem 1.2rem .2rem;font-size:.57rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);}
+.sb-link{display:flex;align-items:center;gap:.6rem;padding:.42rem 1.2rem;font-size:.76rem;color:#94a3b8;text-decoration:none;transition:all .18s;border-left:2px solid transparent;}
+.sb-link:hover,.sb-link.active{color:var(--text);background:rgba(110,231,247,.05);border-left-color:var(--accent);}
+.sb-dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .18s;}
+.sb-link:hover .sb-dot,.sb-link.active .sb-dot{background:var(--accent);}
+.main{margin-left:260px;padding:2.5rem 3.5rem;max-width:1000px;}
+.hero{position:relative;overflow:hidden;border-radius:14px;padding:2.5rem;margin-bottom:2.5rem;background:var(--surface2);border:1px solid var(--border2);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(110,231,247,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(110,231,247,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.hero-glow{position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(167,139,250,.18) 0%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:.7rem;display:flex;align-items:center;gap:.6rem;}
+.hero-eyebrow::before{content:'';display:block;width:22px;height:1px;background:var(--accent);}
+.hero h1{font-size:2rem;font-weight:900;line-height:1.1;margin-bottom:.7rem;}
+.hero h1 em{font-style:normal;color:var(--accent);}
+.hero p{color:#94a3b8;font-size:.88rem;max-width:580px;line-height:1.7;}
+.sec-hdr{display:flex;align-items:flex-start;gap:1rem;margin:3rem 0 1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+.sec-num{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;flex-shrink:0;}
+.sn-cyan{background:rgba(110,231,247,.12);color:var(--accent);border:1px solid rgba(110,231,247,.2);}
+.sn-purple{background:rgba(167,139,250,.12);color:var(--accent2);border:1px solid rgba(167,139,250,.2);}
+.sn-green{background:rgba(52,211,153,.12);color:var(--accent3);border:1px solid rgba(52,211,153,.2);}
+.sn-orange{background:rgba(251,146,60,.12);color:var(--orange);border:1px solid rgba(251,146,60,.2);}
+.sn-yellow{background:rgba(251,191,36,.12);color:var(--yellow);border:1px solid rgba(251,191,36,.2);}
+.sn-pink{background:rgba(244,114,182,.12);color:var(--pink);border:1px solid rgba(244,114,182,.2);}
+.sn-blue{background:rgba(96,165,250,.12);color:var(--blue);border:1px solid rgba(96,165,250,.2);}
+.sec-ey{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.25rem;}
+.sec-title{font-size:1.4rem;font-weight:800;line-height:1.2;}
+.sec-desc{font-size:.81rem;color:var(--muted);margin-top:.25rem;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.4rem;margin-bottom:1.1rem;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
+.card.cyan::before{background:var(--accent);}
+.card.purple::before{background:var(--accent2);}
+.card.green::before{background:var(--accent3);}
+.card.orange::before{background:var(--orange);}
+.card.yellow::before{background:var(--yellow);}
+.card.pink::before{background:var(--pink);}
+.card.blue::before{background:var(--blue);}
+.card.w1::before{background:var(--w1);}
+.card.w2::before{background:var(--w2);}
+.card.w3::before{background:var(--w3);}
+.card-lbl{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:.55rem;}
+.card-lbl.cyan{color:var(--accent)}.card-lbl.purple{color:var(--accent2)}.card-lbl.green{color:var(--accent3)}
+.card-lbl.orange{color:var(--orange)}.card-lbl.yellow{color:var(--yellow)}.card-lbl.pink{color:var(--pink)}
+.card-lbl.blue{color:var(--blue)}.card-lbl.w1{color:var(--w1)}.card-lbl.w2{color:var(--w2)}.card-lbl.w3{color:var(--w3)}
+.card-q{font-weight:700;font-size:.95rem;margin-bottom:.5rem;line-height:1.5;}
+.card-desc{font-size:.81rem;color:#94a3b8;line-height:1.7;margin-bottom:.8rem;}
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;overflow-x:auto;font-size:.76rem;line-height:1.65;margin:.6rem 0;}
+code{font-family:'Cascadia Code','Fira Code','Courier New',monospace;}
+.cm{color:#6272a4;font-style:italic;}.kw{color:#ff79c6;}.fn{color:#50fa7b;}.str{color:#f1fa8c;}.num{color:#bd93f9;}.key{color:#8be9fd;}.val{color:#ffb86c;}.ok{color:#50fa7b;font-weight:bold;}.er{color:#ff5555;font-weight:bold;}
+.alert{border-radius:8px;padding:.9rem 1.1rem;margin:.7rem 0;font-size:.81rem;line-height:1.65;display:flex;gap:.8rem;}
+.alert-icon{font-size:1rem;flex-shrink:0;margin-top:.05rem;}
+.alert-body strong{display:block;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.25rem;}
+.alert.info{background:rgba(110,231,247,.06);border:1px solid rgba(110,231,247,.18);}
+.alert.info strong{color:var(--accent);}
+.alert.warn{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);}
+.alert.warn strong{color:var(--yellow);}
+.alert.danger{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.2);}
+.alert.danger strong{color:var(--red);}
+.alert.success{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);}
+.alert.success strong{color:var(--accent3);}
+.steps{list-style:none;counter-reset:step;margin:.4rem 0;}
+.steps li{counter-increment:step;display:flex;gap:.8rem;margin-bottom:.8rem;font-size:.83rem;line-height:1.6;align-items:flex-start;}
+.steps li::before{content:counter(step);min-width:24px;height:24px;background:var(--surface3);color:var(--accent);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.68rem;flex-shrink:0;margin-top:.1rem;}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
+.checklist li{display:flex;align-items:flex-start;gap:.7rem;font-size:.83rem;color:#94a3b8;line-height:1.5;}
+.checklist li::before{content:'☐';color:var(--muted);flex-shrink:0;font-size:.95rem;line-height:1.3;}
+.tbl{width:100%;border-collapse:collapse;margin:.7rem 0;font-size:.8rem;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.tbl th{background:var(--surface2);padding:.6rem .85rem;text-align:left;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);}
+.tbl td{padding:.6rem .85rem;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:rgba(255,255,255,.015);}
+.ic{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:.1em .35em;font-family:monospace;font-size:.8em;}
+.goal{display:flex;align-items:flex-start;gap:.7rem;background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.2);border-radius:6px;padding:.85rem 1rem;margin-top:1rem;font-size:.81rem;}
+.goal strong{color:var(--accent3);}
+.day-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:1.2rem;overflow:hidden;}
+.day-hdr{display:flex;align-items:center;gap:.9rem;padding:1rem 1.3rem;border-bottom:1px solid transparent;cursor:pointer;user-select:none;transition:background .18s;}
+.day-hdr:hover{background:rgba(255,255,255,.025);}
+.day-card.open .day-hdr{border-bottom-color:var(--border);}
+.day-num{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex-shrink:0;}
+.d-w1 .day-num{background:rgba(56,189,248,.15);color:var(--w1);}
+.d-w2 .day-num{background:rgba(251,191,36,.15);color:var(--w2);}
+.d-w3 .day-num{background:rgba(52,211,153,.15);color:var(--w3);}
+.day-tw{flex:1;}
+.day-title{font-weight:700;font-size:.95rem;}
+.day-sub{font-size:.72rem;color:var(--muted);margin-top:.1rem;}
+.day-chev{color:var(--muted);transition:transform .28s;font-size:1.1rem;}
+.day-card.open .day-chev{transform:rotate(180deg);}
+.day-body{display:none;padding:1.4rem;}
+.day-card.open .day-body{display:block;}
+.week-hdr{display:flex;align-items:center;gap:.9rem;margin:2.5rem 0 1.2rem;padding-bottom:.9rem;border-bottom:1px solid var(--border);}
+.week-badge{padding:.35rem .9rem;border-radius:6px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.wb1{background:rgba(56,189,248,.15);color:var(--w1);border:1px solid rgba(56,189,248,.3);}
+.wb2{background:rgba(251,191,36,.15);color:var(--w2);border:1px solid rgba(251,191,36,.3);}
+.wb3{background:rgba(52,211,153,.15);color:var(--w3);border:1px solid rgba(52,211,153,.3);}
+.week-title{font-size:1.2rem;font-weight:800;}
+.tag{display:inline-block;padding:.15rem .5rem;border-radius:4px;font-size:.65rem;font-weight:700;}
+.t-id{background:rgba(167,139,250,.15);color:#a78bfa;}
+.t-img{background:rgba(244,114,182,.15);color:#f472b6;}
+.t-cmp{background:rgba(56,189,248,.15);color:#38bdf8;}
+.t-net{background:rgba(251,191,36,.15);color:#fbbf24;}
+.t-blk{background:rgba(52,211,153,.15);color:#34d399;}
+.t-obj{background:rgba(251,146,60,.15);color:#fb923c;}
+.t-ht{background:rgba(248,113,113,.15);color:#f87171;}
+.nav-btns{display:flex;gap:1rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);}
+.nav-btn{display:flex;align-items:center;gap:.6rem;padding:.7rem 1.2rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);font-size:.78rem;transition:all .2s;flex:1;}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent);}
+.nav-btn.next{justify-content:flex-end;}
+#scrollTop{position:fixed;bottom:1.5rem;right:1.5rem;width:40px;height:40px;background:var(--surface2);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .3s;z-index:200;color:var(--accent);font-size:.95rem;}
+#scrollTop.show{opacity:1;}
+@media(max-width:900px){.sidebar{display:none;}.main{margin-left:0;padding:1.5rem;}}
+
+.prog-row{display:flex;align-items:center;gap:.9rem;margin-bottom:.7rem;}
+.prog-label{width:150px;font-size:.78rem;flex-shrink:0;}
+.prog-bar{flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:4px;}
+.prog-pct{width:38px;text-align:right;font-weight:700;font-size:.78rem;}
+.kbd{display:inline-flex;align-items:center;justify-content:center;background:var(--surface3);border:1px solid var(--border2);border-bottom:2px solid var(--border2);border-radius:4px;padding:.15rem .5rem;font-family:monospace;font-size:.75rem;margin:0 .1rem;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-radius:8px;overflow:hidden;margin:.7rem 0;}
+.two-col-panel{background:var(--surface);padding:1.2rem;}
+.two-col-hdr{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);}
+</style></head><body>
+<div id="topbar"></div>
+<nav class="sidebar">
+  <div class="sb-logo"><div class="sb-logo-tag">COA Complete Guide</div><h2>File 01</h2><p>Foundation & Exam Intel</p></div>
+  <div class="sb-file-nav">
+    <a href="COA_00_Master_Index.html" class="sb-file-link"><span class="fnum">00</span>Master Index</a>
+    <a href="COA_01_Foundation.html" class="sb-file-link current"><span class="fnum">01</span>Foundation & Exam Intel</a>
+    <a href="COA_02_Week1_CoreServices.html" class="sb-file-link"><span class="fnum">02</span>Week 1 — Core Services</a>
+    <a href="COA_03_Week2_NetworkStorage.html" class="sb-file-link"><span class="fnum">03</span>Week 2 — Network & Storage</a>
+    <a href="COA_04_Week3_MockExams.html" class="sb-file-link"><span class="fnum">04</span>Week 3 — Speed & Mocks</a>
+    <a href="COA_05_UbuntuProject.html" class="sb-file-link"><span class="fnum">05</span>Ubuntu Server Project</a>
+  </div>
+  <div class="sb-section-label">This File</div>
+  <a href="#whatiscoa" class="sb-link"><span class="sb-dot"></span>What is COA</a>
+  <a href="#examformat" class="sb-link"><span class="sb-dot"></span>Exam Format</a>
+  <a href="#weights" class="sb-link"><span class="sb-dot"></span>Domain Weights</a>
+  <a href="#realintel" class="sb-link"><span class="sb-dot"></span>Real Candidate Intel</a>
+  <a href="#setup" class="sb-link"><span class="sb-dot"></span>Environment Setup</a>
+  <a href="#keyboard" class="sb-link"><span class="sb-dot"></span>Keyboard & Browser</a>
+  <a href="#bookmarks" class="sb-link"><span class="sb-dot"></span>Bookmarks</a>
+  <a href="#examday" class="sb-link"><span class="sb-dot"></span>Exam Day Protocol</a>
+  <a href="#scoring" class="sb-link"><span class="sb-dot"></span>Scoring Strategy</a>
+</nav>
+<main class="main">
+  <div class="hero">
+    <div class="hero-grid"></div><div class="hero-glow"></div>
+    <div class="hero-eyebrow">File 01 of 05 — Read Before Day 1</div>
+    <h1><em>Foundation</em> & Exam Intel</h1>
+    <p>Everything you need to know about the exam before you type a single command. Read this completely before starting Day 1. It will change how you study.</p>
+  </div>
+
+  <!-- WHAT IS COA -->
+  <div id="whatiscoa">
+    <div class="sec-hdr"><div class="sec-num sn-cyan">🎓</div><div><div class="sec-ey" style="color:var(--accent);">The certification</div><div class="sec-title">What is the COA?</div></div></div>
+    <div class="card cyan">
+      <div class="card-lbl cyan">Certified OpenStack Administrator</div>
+      <p style="font-size:.84rem;line-height:1.7;margin-bottom:.9rem;">The COA is the <strong>only professional certification issued by the Open Infrastructure Foundation</strong> — the same organisation that governs OpenStack itself. It is a <strong>performance-based exam</strong>: you get a live OpenStack environment, a terminal, and 3 hours to complete real tasks. No multiple choice. No theory questions. You either do it or you don't.</p>
+      <table class="tbl">
+        <tr><th>Property</th><th>Detail</th></tr>
+        <tr><td>Duration</td><td>3 hours</td></tr>
+        <tr><td>Format</td><td>Hands-on, live OpenStack environment</td></tr>
+        <tr><td>Tools allowed</td><td>CLI terminal + Horizon dashboard + docs.openstack.org only</td></tr>
+        <tr><td>Cost</td><td>~$300 USD (includes 1 free retake)</td></tr>
+        <tr><td>Pass mark</td><td>~70%</td></tr>
+        <tr><td>Proctored</td><td>Yes — webcam + screen share + audio throughout</td></tr>
+        <tr><td>Browser required</td><td>Chrome or Chromium only</td></tr>
+        <tr><td>Prerequisites</td><td>None official — but 6 months OpenStack experience recommended</td></tr>
+        <tr><td>Issued by</td><td>Open Infrastructure Foundation (openstack.org)</td></tr>
+        <tr><td>Valid for</td><td>3 years</td></tr>
+      </table>
+    </div>
+    <div class="alert success"><div class="alert-icon">🎯</div><div class="alert-body"><strong>Your Edge</strong>You already have real OpenStack experience from Afritec — deployed VMs, managed load balancers, set up monitoring. The COA tests exactly what you've been doing professionally. You're not starting from zero. You're converting existing skills into exam speed.</div></div>
+  </div>
+
+  <!-- EXAM FORMAT -->
+  <div id="examformat">
+    <div class="sec-hdr"><div class="sec-num sn-purple">📋</div><div><div class="sec-ey" style="color:var(--accent2);">How it works</div><div class="sec-title">Exam Format & Environment</div></div></div>
+    <div class="card purple">
+      <div class="card-lbl purple">What You See On Exam Day</div>
+      <ol class="steps">
+        <li>A browser-based exam interface opens with a split screen: task list on one side, live OpenStack environment access on the other.</li>
+        <li>You get a terminal connected to a real OpenStack cloud — Nova, Neutron, Glance, Cinder, Swift, Heat all running.</li>
+        <li>You also get access to the Horizon web dashboard at a given URL.</li>
+        <li>docs.openstack.org is the only external site you can visit. Your bookmarks load there.</li>
+        <li>Tasks are shown one at a time or as a list. Each has a specific named resource to create/modify/configure.</li>
+        <li>When time ends, the auto-grader queries the OpenStack API to check if resources exist with correct properties.</li>
+        <li>Results arrive by email a few hours later.</li>
+      </ol>
+    </div>
+    <div class="card purple">
+      <div class="card-lbl purple">How the Auto-Grader Works — Critical</div>
+      <div class="card-desc">The grader checks resource state via API after exam ends. Understanding this changes everything about how you work.</div>
+      <div class="alert danger"><div class="alert-icon">🤖</div><div class="alert-body"><strong>Names Are Exact</strong>If the task says create volume <span class="ic">data-vol</span> and you name it <span class="ic">data_vol</span> — that's a fail. Underscore vs hyphen matters. Read every task description twice before typing.</div></div>
+      <table class="tbl">
+        <tr><th>Grader Checks</th><th>Example</th></tr>
+        <tr><td>Resource name matches exactly</td><td>Volume must be named exactly as specified</td></tr>
+        <tr><td>Resource properties are set</td><td>Image visibility = public if task said public</td></tr>
+        <tr><td>Relationships exist</td><td>Volume is attached to the correct instance</td></tr>
+        <tr><td>Roles are assigned</td><td>User has correct role on correct project</td></tr>
+        <tr><td>Quotas are set</td><td>Project quota matches the specified numbers</td></tr>
+        <tr><td>Network topology</td><td>Router has external gateway + correct subnet interface</td></tr>
+      </table>
+      <div class="alert warn"><div class="alert-icon">✅</div><div class="alert-body"><strong>Always Verify</strong>After every task, run <span class="ic">openstack TYPE show NAME</span>. 10 seconds of verification prevents losing an entire task's marks. Build this as a habit during all 21 days of practice.</div></div>
+    </div>
+  </div>
+
+  <!-- WEIGHTS -->
+  <div id="weights">
+    <div class="sec-hdr"><div class="sec-num sn-orange">📊</div><div><div class="sec-ey" style="color:var(--orange);">Where the marks live</div><div class="sec-title">Official Domain Weights</div></div></div>
+    <div class="card orange">
+      <div class="card-lbl orange">Exam Domain Weightings — Memorise These</div>
+      <div style="margin:.5rem 0 1rem;">
+        <div class="prog-row"><span class="prog-label" style="color:#38bdf8">Compute (Nova)</span><div class="prog-bar"><div class="prog-fill" style="width:35%;background:#38bdf8"></div></div><span class="prog-pct" style="color:#38bdf8">35%</span></div>
+        <div class="prog-row"><span class="prog-label" style="color:#fbbf24">Networking (Neutron)</span><div class="prog-bar"><div class="prog-fill" style="width:30%;background:#fbbf24"></div></div><span class="prog-pct" style="color:#fbbf24">30%</span></div>
+        <div class="prog-row"><span class="prog-label" style="color:#a78bfa">Identity (Keystone)</span><div class="prog-bar"><div class="prog-fill" style="width:15%;background:#a78bfa"></div></div><span class="prog-pct" style="color:#a78bfa">15%</span></div>
+        <div class="prog-row"><span class="prog-label" style="color:#34d399">Block Storage</span><div class="prog-bar"><div class="prog-fill" style="width:10%;background:#34d399"></div></div><span class="prog-pct" style="color:#34d399">10%</span></div>
+        <div class="prog-row"><span class="prog-label" style="color:#f472b6">Image (Glance)</span><div class="prog-bar"><div class="prog-fill" style="width:5%;background:#f472b6"></div></div><span class="prog-pct" style="color:#f472b6">5%</span></div>
+        <div class="prog-row"><span class="prog-label" style="color:#fb923c">Object Storage</span><div class="prog-bar"><div class="prog-fill" style="width:5%;background:#fb923c"></div></div><span class="prog-pct" style="color:#fb923c">5%</span></div>
+      </div>
+      <table class="tbl">
+        <tr><th>Scenario</th><th>Result</th></tr>
+        <tr><td>Compute 90% + Networking 90% + rest average</td><td style="color:#50fa7b;font-weight:700">Pass ~78%</td></tr>
+        <tr><td>Compute 80% + Networking 80% + rest 60%</td><td style="color:#50fa7b;font-weight:700">Pass ~76%</td></tr>
+        <tr><td>Compute 60% + Networking 60% + rest 90%</td><td style="color:#ff5555;font-weight:700">Borderline Fail ~67%</td></tr>
+        <tr><td>Compute 50% + Networking 50% + rest perfect</td><td style="color:#ff5555;font-weight:700">Fail ~62%</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- REAL INTEL -->
+  <div id="realintel">
+    <div class="sec-hdr"><div class="sec-num sn-yellow">🕵️</div><div><div class="sec-ey" style="color:var(--yellow);">From people who took it</div><div class="sec-title">Real Candidate Intel</div></div></div>
+    <div class="card yellow">
+      <div class="card-lbl yellow">What Actually Appears on the Exam</div>
+      <div class="alert info"><div class="alert-icon">📣</div><div class="alert-body"><strong>Verified Candidate Report</strong>"No questions were asked about creating and using domains in Keystone. All questions were done in the same Default domain. Swift questions required memorising a couple of specific CLI commands."</div></div>
+      <table class="tbl" style="margin-top:.8rem">
+        <tr><th>Topic</th><th>Appears?</th><th>Notes</th></tr>
+        <tr><td>Custom Keystone domains</td><td style="color:#fbbf24">Rare</td><td>All work done in Default domain usually</td></tr>
+        <tr><td>Nova instance lifecycle</td><td style="color:#50fa7b;font-weight:700">Always</td><td>35% of exam — expect many tasks</td></tr>
+        <tr><td>Neutron router + floating IP</td><td style="color:#50fa7b;font-weight:700">Always</td><td>End-to-end connectivity scenario</td></tr>
+        <tr><td>Cinder volume attach/detach</td><td style="color:#50fa7b;font-weight:700">Always</td><td>Include extend and snapshot</td></tr>
+        <tr><td>Heat YAML template</td><td style="color:#fbbf24">Common</td><td>Write from scratch or modify existing</td></tr>
+        <tr><td>Swift ACLs</td><td style="color:#fbbf24">Common</td><td>Memorise exact ACL syntax — it's unintuitive</td></tr>
+        <tr><td>Security groups</td><td style="color:#50fa7b;font-weight:700">Always</td><td>Create and attach, specific port rules</td></tr>
+        <tr><td>Image upload + visibility</td><td style="color:#50fa7b;font-weight:700">Always</td><td>Quick points — do this early</td></tr>
+        <tr><td>Host aggregates</td><td style="color:#6272a4">Rare</td><td>Know the commands but don't over-invest</td></tr>
+      </table>
+    </div>
+    <div class="card yellow">
+      <div class="card-lbl yellow">12 Things That Cost Candidates Marks — Avoid All of These</div>
+      <ol class="steps">
+        <li><strong>Forgetting resize confirm.</strong> After <span class="ic">server resize</span>, the instance sits in VERIFY_RESIZE. Must run <span class="ic">resize confirm</span>.</li>
+        <li><strong>Router with no subnet interface.</strong> Set the external gateway AND add the subnet interface — two separate commands.</li>
+        <li><strong>Floating IP allocated but not associated.</strong> <span class="ic">floating ip create</span> and <span class="ic">server add floating ip</span> are separate steps.</li>
+        <li><strong>Wrong resource name.</strong> <span class="ic">data-vol</span> ≠ <span class="ic">data_vol</span>. Read twice, type once.</li>
+        <li><strong>Volume in error state when attaching.</strong> Always check <span class="ic">volume show X -c status</span> = available before attach.</li>
+        <li><strong>Heat stack YAML indentation error.</strong> Always validate: <span class="ic">openstack orchestration template validate -t file.yaml</span></li>
+        <li><strong>Image deactivated and forgotten.</strong> If you deactivate for one task, reactivate when done.</li>
+        <li><strong>Security group created but not applied.</strong> Create the SG first, then reference it in <span class="ic">server create</span>.</li>
+        <li><strong>Swift ACL not verified.</strong> Always <span class="ic">openstack container show NAME</span> after setting ACL.</li>
+        <li><strong>Quota set on wrong project.</strong> Double-check project name before quota set commands.</li>
+        <li><strong>Keypair created but not injected.</strong> Need <span class="ic">--key-name mykey</span> in server create.</li>
+        <li><strong>Deleting resources that should stay.</strong> Never delete anything unless the task specifically asks for it.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ENVIRONMENT SETUP -->
+  <div id="setup">
+    <div class="sec-hdr"><div class="sec-num sn-green">🖥️</div><div><div class="sec-ey" style="color:var(--accent3);">Before Day 1</div><div class="sec-title">Environment Setup</div></div></div>
+    <div class="card green">
+      <div class="card-lbl green">MicroStack — Your Practice Lab</div>
+      <div class="card-desc">MicroStack is Canonical's snap-based single-node OpenStack. It's your exam simulator. Install it once and use it every day.</div>
+      <pre><code><span class="cm"># On Ubuntu 22.04 LTS (recommended)</span>
+sudo snap install microstack --channel 2024/stable
+
+<span class="cm"># Initialise (takes 10-20 minutes)</span>
+sudo microstack init --auto --control
+
+<span class="cm"># Get admin credentials</span>
+sudo snap get microstack config.credentials.keystone-password
+
+<span class="cm"># Source admin environment</span>
+<span class="kw">source</span> /var/snap/microstack/common/etc/microstack.rc
+
+<span class="cm"># Verify everything is running</span>
+openstack service list
+openstack compute service list
+openstack network agent list
+
+<span class="cm"># Create a test image to use throughout (cirros is small and fast)</span>
+wget http://download.cirros-cloud.net/0.6.2/cirros-0.6.2-x86_64-disk.img
+openstack image create cirros \
+  --disk-format qcow2 \
+  --container-format bare \
+  --file cirros-0.6.2-x86_64-disk.img \
+  --public
+
+<span class="cm"># Verify image is available</span>
+openstack image list</code></pre>
+      <div class="alert info"><div class="alert-icon">💡</div><div class="alert-body"><strong>Alternative: DevStack</strong>If MicroStack install fails, use DevStack: <span class="ic">git clone https://git.openstack.org/openstack-dev/devstack && cd devstack && ./stack.sh</span>. DevStack is the community standard practice environment.</div></div>
+    </div>
+    <div class="card green">
+      <div class="card-lbl green">Daily Startup Sequence — Run Every Study Session</div>
+      <pre><code><span class="cm"># 1. Source credentials (run every new terminal)</span>
+<span class="kw">source</span> /var/snap/microstack/common/etc/microstack.rc
+
+<span class="cm"># 2. Verify services are healthy</span>
+openstack service list
+
+<span class="cm"># 3. Start screen for multi-window</span>
+screen
+
+<span class="cm"># 4. Set study aliases</span>
+alias os='openstack'
+alias osl='openstack server list'
+alias osn='openstack network list'
+alias osv='openstack volume list'
+alias osi='openstack image list'
+
+<span class="cm"># 5. Check your current context</span>
+openstack token issue -c project_name -c username</code></pre>
+    </div>
+  </div>
+
+  <!-- KEYBOARD -->
+  <div id="keyboard">
+    <div class="sec-hdr"><div class="sec-num sn-pink">⌨️</div><div><div class="sec-ey" style="color:var(--pink);">Non-negotiable</div><div class="sec-title">Keyboard Layout & Browser Setup</div></div></div>
+    <div class="alert danger"><div class="alert-icon">🚨</div><div class="alert-body"><strong>US English Keyboard Only</strong>The COA exam uses US English keyboard layout only. If you type on AZERTY (French) or any other layout during practice, your muscle memory will fail you when the exam forces US layout. Switch NOW and practice everything on US layout for all 21 days.</div></div>
+    <div class="card pink">
+      <div class="card-lbl pink">Special Characters to Test — US Layout vs AZERTY</div>
+      <table class="tbl">
+        <tr><th>Character</th><th>US Layout Key</th><th>Why It Matters</th></tr>
+        <tr><td><span class="ic">|</span> pipe</td><td><kbd class="kbd">Shift</kbd>+<kbd class="kbd">\</kbd></td><td>Used in every filter command</td></tr>
+        <tr><td><span class="ic">-</span> hyphen</td><td><kbd class="kbd">-</kbd></td><td>All resource names use hyphens</td></tr>
+        <tr><td><span class="ic">/</span> slash</td><td><kbd class="kbd">/</kbd></td><td>CIDR notation (192.168.0.0/24)</td></tr>
+        <tr><td><span class="ic">"</span> double quote</td><td><kbd class="kbd">Shift</kbd>+<kbd class="kbd">'</kbd></td><td>Used in property values</td></tr>
+        <tr><td><span class="ic">`</span> backtick</td><td><kbd class="kbd">`</kbd></td><td>Command substitution</td></tr>
+        <tr><td><span class="ic">~</span> tilde</td><td><kbd class="kbd">Shift</kbd>+<kbd class="kbd">`</kbd></td><td>Home directory paths</td></tr>
+        <tr><td><span class="ic">$</span> dollar</td><td><kbd class="kbd">Shift</kbd>+<kbd class="kbd">4</kbd></td><td>Variable references</td></tr>
+        <tr><td><span class="ic">{ }</span> braces</td><td><kbd class="kbd">Shift</kbd>+<kbd class="kbd">[</kbd>/<kbd class="kbd">]</kbd></td><td>Heat YAML intrinsic functions</td></tr>
+      </table>
+    </div>
+    <div class="card pink">
+      <div class="card-lbl pink">Chrome Setup — Do This Before Exam Day</div>
+      <ol class="steps">
+        <li>Install Chrome or Chromium (the only supported browsers for the exam).</li>
+        <li>Disable ALL browser extensions except the official proctor plugin (installed during exam check-in).</li>
+        <li>Clear cache and cookies the day before the exam.</li>
+        <li>Set bookmarks now — see next section. Bookmarks work during the exam.</li>
+        <li>Test your webcam and microphone in Chrome settings.</li>
+        <li>Disconnect any second monitor. Proctors require single-screen setup.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- BOOKMARKS -->
+  <div id="bookmarks">
+    <div class="sec-hdr"><div class="sec-num sn-cyan">🔖</div><div><div class="sec-ey" style="color:var(--accent);">Set these before exam day</div><div class="sec-title">Essential Bookmarks</div></div></div>
+    <div class="card cyan">
+      <div class="card-lbl cyan">Create a "COA Exam" bookmark folder in Chrome — Add All of These</div>
+      <pre><code><span class="cm"># 1. CLI command reference — most used bookmark</span>
+https://docs.openstack.org/python-openstackclient/latest/cli/command-list.html
+
+<span class="cm"># 2. Heat template guide — needed for Day 13+</span>
+https://docs.openstack.org/heat/latest/template_guide/hot_guide.html
+
+<span class="cm"># 3. Heat resource types — OS::Nova::Server, OS::Neutron::Net etc</span>
+https://docs.openstack.org/heat/latest/template_guide/openstack.html
+
+<span class="cm"># 4. Keystone admin guide</span>
+https://docs.openstack.org/keystone/latest/admin/cli-manage-projects-users-and-roles.html
+
+<span class="cm"># 5. Neutron networking guide</span>
+https://docs.openstack.org/neutron/latest/admin/intro-os-networking.html
+
+<span class="cm"># 6. Swift ACL guide — ACL syntax is weird, bookmark this</span>
+https://docs.openstack.org/swift/latest/overview_acl.html
+
+<span class="cm"># 7. Cinder volume management</span>
+https://docs.openstack.org/cinder/latest/cli/cli-manage-volumes.html
+
+<span class="cm"># 8. Nova server operations</span>
+https://docs.openstack.org/nova/latest/user/launch-instances.html</code></pre>
+    </div>
+  </div>
+
+  <!-- EXAM DAY -->
+  <div id="examday">
+    <div class="sec-hdr"><div class="sec-num sn-orange">📅</div><div><div class="sec-ey" style="color:var(--orange);">The day itself</div><div class="sec-title">Exam Day Protocol</div></div></div>
+    <div class="card orange">
+      <div class="card-lbl orange">72 Hours Before</div>
+      <ul class="checklist">
+        <li>Run an internet speed test — need stable 10Mbps+ (webcam + screen share + Horizon all run simultaneously)</li>
+        <li>Confirm Chrome is installed and bookmarks are set</li>
+        <li>Test webcam and microphone in Chrome</li>
+        <li>Set keyboard to US English layout</li>
+        <li>Locate your government-issued photo ID (passport or national ID — physical, not phone photo)</li>
+        <li>Disconnect second monitor if you have one</li>
+      </ul>
+    </div>
+    <div class="card orange">
+      <div class="card-lbl orange">Day of Exam — Room Requirements</div>
+      <ul class="checklist">
+        <li>Empty room — you must be the only person. Proctor checks via webcam before start.</li>
+        <li>Clean desk — no papers, notebooks, phones. Water in a clear glass is OK.</li>
+        <li>No headphones or earbuds</li>
+        <li>No TV, music, or background conversation</li>
+        <li>Good lighting — proctor must see your face clearly. Don't sit with window behind you.</li>
+        <li>Be ready for room scan — proctor will ask you to show the whole room with your webcam</li>
+      </ul>
+    </div>
+    <div class="card orange">
+      <div class="card-lbl orange">Exam Day Timeline</div>
+      <table class="tbl">
+        <tr><th>Time</th><th>Action</th></tr>
+        <tr><td>T-60 min</td><td>Eat properly. Hydrate. No heavy food.</td></tr>
+        <tr><td>T-30 min</td><td>Close all browser tabs and apps. Restart Chrome.</td></tr>
+        <tr><td>T-20 min</td><td>Run 10 warm-up OpenStack commands to get fingers moving.</td></tr>
+        <tr><td>T-15 min</td><td>Log in to exam platform. Start check-in process — it takes time.</td></tr>
+        <tr><td>T-10 min</td><td>Proctor connects. Show ID. Scan room with webcam.</td></tr>
+        <tr><td>T-0</td><td>Exam starts. First: open screen. Second: scan all task titles — plan order.</td></tr>
+        <tr><td>First 3 min</td><td>Read all tasks. Mark easy/hard. Do NOT start with the hardest.</td></tr>
+        <tr><td>Strategy</td><td>Identity → Images → Networking (foundation) → Compute (marks) → Storage → Heat</td></tr>
+        <tr><td>T+2h 30m</td><td>Stop starting new tasks. Verify everything you've done.</td></tr>
+        <tr><td>T+3h</td><td>Exam ends automatically. Do not close browser.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- SCORING -->
+  <div id="scoring">
+    <div class="sec-hdr"><div class="sec-num sn-green">🏆</div><div><div class="sec-ey" style="color:var(--accent3);">The strategy</div><div class="sec-title">Scoring Strategy & Task Order</div></div></div>
+    <div class="card green">
+      <div class="card-lbl green">Optimal Task Order — Maximum Marks for Time Spent</div>
+      <table class="tbl">
+        <tr><th>#</th><th>Domain</th><th>Why First</th></tr>
+        <tr><td style="color:#50fa7b;font-weight:700">1st</td><td>Identity (Keystone)</td><td>Fast CLI. Creates users/projects that other tasks need. Quick marks.</td></tr>
+        <tr><td style="color:#50fa7b;font-weight:700">2nd</td><td>Image (Glance)</td><td>Upload once. All compute tasks need an image. Do early.</td></tr>
+        <tr><td style="color:#fbbf24;font-weight:700">3rd</td><td>Networking (Neutron)</td><td>Network must exist before instances. Foundation for 30% marks.</td></tr>
+        <tr><td style="color:#fbbf24;font-weight:700">4th</td><td>Compute (Nova)</td><td>Biggest mark pool (35%). Do after network is ready.</td></tr>
+        <tr><td style="color:#fb923c;font-weight:700">5th</td><td>Block Storage (Cinder)</td><td>Attach to running instances. Medium effort, solid 10% marks.</td></tr>
+        <tr><td style="color:#f87171;font-weight:700">Last</td><td>Heat + Object Storage</td><td>Heat takes longest. Swift is only 5%. Do if time allows.</td></tr>
+      </table>
+    </div>
+    <div class="card green">
+      <div class="card-lbl green">The Verification Habit — Every Single Task</div>
+      <pre><code><span class="cm"># Run after EVERY task before moving to the next</span>
+openstack TYPE show NAME
+
+<span class="cm"># Specific verifications</span>
+openstack server show NAME -c status -c flavor -c image -c security_groups
+openstack router show NAME -c external_gateway_info
+openstack volume show NAME -c attachments -c status
+openstack stack show NAME -c stack_status
+openstack role assignment list --project PROJ --user USER --names
+
+<span class="cm"># Validate Heat BEFORE deploying</span>
+openstack orchestration template validate -t mystack.yaml</code></pre>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <a href="COA_00_Master_Index.html" class="nav-btn">← Master Index</a>
+    <a href="COA_02_Week1_CoreServices.html" class="nav-btn next">File 02 — Week 1 Core Services →</a>
+  </div>
+</main>
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>window.addEventListener('scroll',()=>{const s=window.scrollY,h=document.body.scrollHeight-window.innerHeight;const tb=document.getElementById('topbar');if(tb)tb.style.width=(s/h*100)+'%';const st=document.getElementById('scrollTop');if(st)st.classList.toggle('show',s>300);document.querySelectorAll('.sb-link').forEach(a=>{const id=a.getAttribute('href');if(!id||!id.startsWith('#'))return;const el=document.getElementById(id.slice(1));if(el)a.classList.toggle('active',s>=el.offsetTop-130);});});</script>
+</body></html>
